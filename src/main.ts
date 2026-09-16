@@ -4,7 +4,6 @@ import typescriptLogo from './assets/typescript.svg';
 import viteLogo from './assets/vite.svg';
 import { setupCounter } from './counter.ts';
 
-
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <section id="center">
   <div class="hero">
