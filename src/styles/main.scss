@@ -33,6 +33,18 @@ a {
   text-decoration: none;
 }
 
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.container {
+  max-width: $content-width;
+  margin: 0 auto;
+}
+
 .header {
   padding: 1.5rem 5rem;
   display: flex;
@@ -78,6 +90,8 @@ a {
 }
 
 .button {
+  display: inline-block;
+  font-size: $body-small;
   font-weight: $bold;
   color: $on-primary;
   padding: $btn-medium;
@@ -139,7 +153,6 @@ a {
   position: fixed;
   top: 0;
   left: 0;
-  //right: 0;
   bottom: 0;
   z-index: 100;
   flex-direction: column;
@@ -259,14 +272,18 @@ a {
   }
 
   .header {
-    padding: 20px $size-5;
+    padding: $headline-small $size-5;
     &__actions {
       margin-left: auto;
     }
   }
 
   .logo {
-    font-size: 20px;
+    font-size: $headline-small;
+  }
+
+  .button {
+    padding: $btn-small;
   }
 
   .burger-menu {
