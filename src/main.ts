@@ -39,7 +39,7 @@ function logo(): HTMLAnchorElement {
 }
 
 function header(): HTMLElement {
-  const root = element('header', 'header');
+  const root = element('header', 'header container');
   const nav = element('nav', 'navigation');
   const actions = element('div', 'header__actions');
   nav.setAttribute('aria-label', 'Primary navigation');
