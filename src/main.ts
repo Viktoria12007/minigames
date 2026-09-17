@@ -1,60 +1,102 @@
-import './style.css';
-import heroImg from './assets/hero.png';
-import typescriptLogo from './assets/typescript.svg';
-import viteLogo from './assets/vite.svg';
-import { setupCounter } from './counter.ts';
+import './styles/main.scss';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${typescriptLogo}" class="framework" alt="TypeScript logo"/>
-    <img src="${viteLogo}" class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.ts</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+const app = document.querySelector<HTMLDivElement>('#app');
 
-<div class="ticks"></div>
+if (!app) throw new Error('Application root is missing');
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src="${viteLogo}" alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://www.typescriptlang.org" target="_blank">
-          <img class="button-icon" src="${typescriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
+function element<K extends keyof HTMLElementTagNameMap>(
+  tag: K,
+  className?: string,
+  text?: string,
+): HTMLElementTagNameMap[K] {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
 
-<div class="ticks"></div>
-<section id="spacer"></section>
-`;
+function add(parent: Element, ...children: Array<Node | null | undefined>): void {
+  parent.append(
+    ...children.filter((child): child is Node => child !== null && child !== undefined),
+  );
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!);
+function link(text: string, href: string, className?: string): HTMLAnchorElement {
+  const node = element('a', className, text);
+  node.href = href;
+  return node;
+}
+
+function button(text: string, className?: string): HTMLButtonElement {
+  return element('button', className, text);
+}
+
+function logo(): HTMLAnchorElement {
+  const node = link('', '#home', 'logo');
+  node.setAttribute('aria-label', 'MiniGames home');
+  add(node, element('div', 'logo__icon'), document.createTextNode('MiniGames'));
+  return node;
+}
+
+function header(): HTMLElement {
+  const root = element('header', 'header');
+  const nav = element('nav', 'navigation');
+  const actions = element('div', 'header__actions');
+  nav.setAttribute('aria-label', 'Primary navigation');
+  add(
+    nav,
+    link('Home', '#home', 'is-active'),
+    link('Library', '#library'),
+    link('Tournaments', '#tournaments'),
+    link('Community', '#community'),
+  );
+  const login = button('Log In', 'header__button button button_ghost');
+  const register = button('Sign Up', 'header__button button');
+  login.dataset.auth = 'login';
+  register.dataset.auth = 'register';
+  add(actions, login, register);
+  const burger = button('', 'burger');
+  burger.setAttribute('aria-label', 'Open menu');
+  burger.setAttribute('aria-expanded', 'false');
+  burger.setAttribute('aria-expanded', 'true');
+  burger.addEventListener('click', (event) => {
+    const item = event.currentTarget as HTMLButtonElement;
+    item.classList.toggle('is-open');
+    item.setAttribute('aria-expanded', String(item.classList.contains('is-open')));
+    document.querySelector('.burger-menu')?.classList.toggle('burger-menu_open');
+  });
+  add(burger, element('span'), element('span'), element('span'));
+  add(root, logo(), nav, actions, burger);
+  return root;
+}
+
+function burgerMenu(): HTMLElement {
+  const root = element('div', 'burger-menu');
+  const headerBurger = element('div', 'burger-menu__header');
+  const close = button('', 'close-burger');
+  close.setAttribute('aria-label', 'Close menu');
+  add(close, element('span'));
+  close.addEventListener('click', () => {
+    document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open');
+  });
+  add(headerBurger, logo(), close);
+  const nav = element('nav', 'burger-menu__navigation');
+  const actions = element('div', 'burger-menu__actions');
+  nav.setAttribute('aria-label', 'Primary navigation');
+  add(
+    nav,
+    link('Home', '#home', 'is-active'),
+    link('Library', '#library'),
+    link('Tournaments', '#tournaments'),
+    link('Community', '#community'),
+  );
+  const login = button('Log In', 'burger-menu__button button button_ghost-white');
+  const register = button('Sign Up', 'burger-menu__button button');
+  login.dataset.auth = 'login';
+  register.dataset.auth = 'register';
+  add(actions, login, register);
+  add(root, headerBurger, nav, actions);
+  return root;
+}
+
+add(app, header(), burgerMenu());

@@ -3,11 +3,11 @@ import prettier from 'eslint-config-prettier';
 import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import { defineConfig } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig(
+  globalIgnores(['dist/**', 'node_modules/**']),
   {
-    ignores: ['dist', 'node_modules'],
     linterOptions: {
       noInlineConfig: true,
     },
