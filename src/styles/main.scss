@@ -228,6 +228,7 @@ p {
   overflow: hidden;
   background-color: rgb(30, 27, 58, 0.65);
   isolation: isolate;
+  margin-bottom: $size-5;
   &__art {
     position: absolute;
     inset: 0;
@@ -316,6 +317,7 @@ p {
 
   .hero {
     min-height: 383px;
+    margin-bottom: $size-3;
     &__card {
       max-width: 480px;
       padding: $size-3;
@@ -371,6 +373,7 @@ p {
 
   .hero {
     min-height: 331px;
+    margin-bottom: $size-2;
     &__title {
       font-size: $display-small;
       margin-bottom: $size-2;
