@@ -99,7 +99,7 @@ p {
   border-radius: $corner-small;
   background: $primary;
   cursor: pointer;
-  transition: all $transition;
+  transition: $transition;
   &:hover {
     background-color: $primary-high;
   }
