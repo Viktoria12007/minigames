@@ -509,6 +509,72 @@ p {
   }
 }
 
+.developer {
+  display: grid;
+  grid-template-columns: 0.95fr 1fr;
+  gap: $size-5;
+  align-items: center;
+  padding: 0 $size-15;
+  margin-bottom: $size-5;
+  &__image {
+    height: 480px;
+    border-radius: $corner-extra-large;
+    background-image: url('../assets/images/developer-illustration.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.039), 0 10px 24px -8px rgba(0, 0, 0, 0.071);
+  }
+  &__card {
+    padding: $size-5;
+    border: $border-primary;
+    border-radius: $corner-extra-large;
+    background-color: $white;
+    box-shadow: 0 2px 8px -4px rgba(0, 0, 0, 0.039), 0 14px 30px -10px rgba(0, 0, 0, 0.078);
+  }
+  &__title {
+    margin-bottom: $size-3;
+    &::before {
+      display: none;
+    }
+  }
+  &__text {
+    max-width: 580px;
+    color: $on-bg;
+    font-size: $body-large;
+    line-height: 1.5;
+    font-weight: $regular;
+    margin-bottom: $size-3;
+  }
+  &__button {
+    display: flex;
+    align-items: center;
+    gap: $size-1;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    font-size: $body-large;
+    border-radius: $corner-medium;
+    padding: $btn-large;
+    box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.1);
+    margin-bottom: $size-3;
+    &::before {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      background-image: url('../assets/images/upload.svg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+    }
+  }
+  &__contact {
+    display: block;
+    font-size: $body-small;
+    font-weight: $regular;
+    color: $on-bg-low;
+  }
+}
+
 @media (max-width: 1024px) {
   body {
     font-size: $body-small;
@@ -685,6 +751,39 @@ p {
       font-size: $label-small;
     }
   }
+  .developer {
+    grid-template-columns: 1fr;
+    gap: $size-3;
+    padding: 0 $size-5;
+    margin-bottom: $size-3;
+    &__image {
+      height: 300px;
+    }
+    &__card {
+      padding: $size-4;
+    }
+    &__title {
+      margin-bottom: $size-2;
+    }
+    &__text {
+      max-width: 480px;
+      font-size: $body-small;
+      margin-bottom: $size-2;
+    }
+    &__button {
+      font-size: $body-small;
+      padding: $btn-medium;
+      box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.1);
+      margin-bottom: $size-2;
+      &::before {
+        width: 12px;
+        height: 12px;
+      }
+    }
+    &__contact {
+      font-size: $label-medium;
+    }
+  }
 }
 @media (max-width: 480px) {
   body {
@@ -805,6 +904,23 @@ p {
       width: 24px;
       height: 24px;
       margin-right: $size-05;
+    }
+  }
+  .developer {
+    gap: $size-2;
+    padding: 0 $size-2;
+    margin-bottom: $size-2;
+    &__image {
+      height: 227px;
+    }
+    &__text {
+      font-size: $body-small;
+      margin-bottom: $size-2;
+    }
+    &__button {
+      font-size: $label-medium;
+      padding: $btn-small;
+      margin-bottom: $size-2;
     }
   }
 }
