@@ -46,11 +46,16 @@ function header(): HTMLElement {
   const list = element('ul', 'header__list');
   const actions = element('div', 'header__actions');
   nav.setAttribute('aria-label', 'Primary navigation');
-  const headerLinks = [['Home', '#home', 'is-active'], ['Library', '#library'], ['Tournaments', '#tournaments'], ['Community', '#community']];
+  const headerLinks = [
+    ['Home', '#home', 'is-active'],
+    ['Library', '#library'],
+    ['Tournaments', '#tournaments'],
+    ['Community', '#community'],
+  ];
   for (const [text, href, className] of headerLinks) {
-      const li = element('li', 'header__item');
-      add(li, link(text, href, `header__link ${className ?? className}`));
-      add(list, li);
+    const li = element('li', 'header__item');
+    add(li, link(text, href, `header__link ${className ?? className}`));
+    add(list, li);
   }
   add(nav, list);
   const login = button('Log In', 'header__button button button_ghost');
