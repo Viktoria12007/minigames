@@ -59,6 +59,22 @@ p {
   border-bottom: 2px solid $on-primary;
   position: relative;
   z-index: 2;
+  &__nav {
+    margin-left: auto;
+  }
+  &__list {
+    display: flex;
+    gap: $size-5;
+    font-size: $body-medium;
+    & .is-active {
+      color: $on-primary;
+      font-weight: $bold;
+    }
+  }
+  &__actions {
+    display: flex;
+    gap: $size-2;
+  }
 }
 
 .logo {
@@ -77,22 +93,6 @@ p {
     background-position: center center;
     background-size: contain;
   }
-}
-
-.navigation {
-  margin-left: auto;
-  display: flex;
-  gap: $size-5;
-  font-size: $body-medium;
-  & .is-active {
-    color: $on-primary;
-    font-weight: $bold;
-  }
-}
-
-.header__actions {
-  display: flex;
-  gap: $size-2;
 }
 
 .button {
@@ -706,7 +706,7 @@ p {
   }
 
   .header__actions .header__button.button_ghost,
-  .navigation {
+  .header__nav {
     display: none;
   }
 
