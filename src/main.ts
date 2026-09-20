@@ -153,7 +153,7 @@ function gamesSection(): HTMLElement {
     const card = element('article', 'games__card');
     const image = element('img', 'games__image');
     const info = element('div', 'games__card-info');
-    image.src = game.cardImage;
+    image.src = `${import.meta.env.BASE_URL}${game.cardImage.slice(1)}`;
     image.alt = game.name;
     add(
       info,
