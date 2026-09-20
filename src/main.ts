@@ -42,16 +42,17 @@ function logo(): HTMLAnchorElement {
 
 function header(): HTMLElement {
   const root = element('header', 'header container');
-  const nav = element('nav', 'navigation');
+  const nav = element('nav', 'header__nav');
+  const list = element('ul', 'header__list');
   const actions = element('div', 'header__actions');
   nav.setAttribute('aria-label', 'Primary navigation');
-  add(
-    nav,
-    link('Home', '#home', 'is-active'),
-    link('Library', '#library'),
-    link('Tournaments', '#tournaments'),
-    link('Community', '#community'),
-  );
+  const headerLinks = [['Home', '#home', 'is-active'], ['Library', '#library'], ['Tournaments', '#tournaments'], ['Community', '#community']];
+  for (const [text, href, className] of headerLinks) {
+      const li = element('li', 'header__item');
+      add(li, link(text, href, `header__link ${className ?? className}`));
+      add(list, li);
+  }
+  add(nav, list);
   const login = button('Log In', 'header__button button button_ghost');
   const register = button('Sign Up', 'header__button button');
   login.dataset.auth = 'login';
