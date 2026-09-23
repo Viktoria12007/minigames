@@ -3,7 +3,6 @@ import { add, button, element } from '../../shared/dom';
 
 export function createGamesSection(): HTMLElement {
   const section = element('section', 'games container');
-  section.id = 'library';
   section.setAttribute('aria-labelledby', 'games-title');
   const heading = element('div', 'games__heading');
   const controls = element('div', 'games__slider-controls');

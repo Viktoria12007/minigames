@@ -7,7 +7,6 @@ export function createFooter(): HTMLElement {
   const top = element('div', 'footer__top');
   const intro = element('div', 'footer__intro');
   const groups = element('div', 'footer__links');
-  root.id = 'community';
   add(
     intro,
     createLogo(),
@@ -23,7 +22,7 @@ export function createFooter(): HTMLElement {
       [
         ['Home', '#home'],
         ['Library', '#library'],
-        ['Categories', '#library'],
+        ['Categories', '#categories'],
         ['Tournaments', '#tournaments'],
       ],
     ],

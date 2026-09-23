@@ -14,14 +14,14 @@ export function createHeader(): HTMLElement {
   const actions = element('div', 'header__actions');
   nav.setAttribute('aria-label', 'Primary navigation');
   const headerLinks = [
-    ['Home', '#home', 'is-active'],
-    ['Library', '#library'],
-    ['Tournaments', '#tournaments'],
-    ['Community', '#community'],
+    ['Home', '#home', location.hash === '#home' ? 'is-active' : ''],
+    ['Library', '#library', location.hash === '#library' ? 'is-active' : ''],
+    ['Tournaments', '#tournaments', location.hash === '#tournaments' ? 'is-active' : ''],
+    ['Community', '#community', location.hash === '#community' ? 'is-active' : ''],
   ];
   for (const [text, href, className] of headerLinks) {
     const li = element('li', 'header__item');
-    add(li, link(text, href, `header__link ${className ?? className}`));
+    add(li, link(text, href, `header__link ${className}`));
     add(list, li);
   }
   add(nav, list);
@@ -60,10 +60,10 @@ export function createBurgerMenu(): HTMLElement {
   nav.setAttribute('aria-label', 'Primary navigation');
   add(
     nav,
-    link('Home', '#home', 'is-active'),
-    link('Library', '#library'),
-    link('Tournaments', '#tournaments'),
-    link('Community', '#community'),
+    link('Home', '#home', location.hash === '#home' ? 'is-active' : ''),
+    link('Library', '#library', location.hash === '#library' ? 'is-active' : ''),
+    link('Tournaments', '#tournaments', location.hash === '#tournaments' ? 'is-active' : ''),
+    link('Community', '#community', location.hash === '#community' ? 'is-active' : ''),
   );
   const login = button('Log In', 'burger-menu__button button button_ghost-white');
   const register = button('Sign Up', 'burger-menu__button button');
