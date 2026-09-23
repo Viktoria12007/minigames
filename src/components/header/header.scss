@@ -1,0 +1,315 @@
+﻿@use '../../styles/variables' as *;
+
+.header {
+  padding: 1.5rem 5rem;
+  display: flex;
+  align-items: center;
+  gap: $size-4;
+  border-bottom: 2px solid $on-primary;
+  position: relative;
+  z-index: 2;
+  &__nav {
+    margin-left: auto;
+  }
+  &__list {
+    display: flex;
+    gap: $size-5;
+    font-size: $body-medium;
+    & .is-active {
+      color: $on-primary;
+      font-weight: $bold;
+    }
+  }
+  &__actions {
+    display: flex;
+    gap: $size-2;
+  }
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: $size-1;
+  font-size: $display-small;
+  font-weight: $extra-bold;
+  color: $on-primary;
+  white-space: nowrap;
+  &__icon {
+    width: 30px;
+    height: 30px;
+    background-image: url('../../assets/images/logo.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+  }
+}
+
+.button {
+  display: inline-block;
+  font-size: $body-small;
+  font-weight: $bold;
+  color: $on-primary;
+  padding: $btn-medium;
+  border: $border-primary;
+  border-radius: $corner-small;
+  background: $primary;
+  cursor: pointer;
+  transition: $transition;
+  &:hover {
+    background-color: $primary-high;
+  }
+  &:active {
+    background-color: $primary-high;
+  }
+}
+
+.button_ghost {
+  background: $transparent;
+  &.button:hover {
+    background-color: $primary-low;
+  }
+  &.button:active {
+    background-color: $primary-low;
+  }
+}
+
+.button_ghost-white {
+  color: $white;
+  background: $transparent;
+  border-color: $white;
+  &.button:hover {
+    border-color: $primary;
+  }
+  &.button:active {
+    border-color: $primary;
+  }
+}
+
+.burger {
+  display: none;
+  width: 34px;
+  height: 34px;
+  padding: 6px;
+  border: $border-primary;
+  border-radius: $corner-small;
+  background: $transparent;
+  cursor: pointer;
+  & span {
+    display: block;
+    height: 2px;
+    background: $on-primary;
+    margin: 3px 0;
+  }
+}
+
+.burger-menu {
+  display: none;
+  min-width: 320px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  flex-direction: column;
+  gap: $size-4;
+  padding: $size-3;
+  font-size: $body-large;
+  background: $bg-footer;
+  border-bottom: none;
+  &_open {
+    display: none;
+  }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__navigation {
+    display: flex;
+    flex-direction: column;
+    gap: $size-3;
+    color: $on-bg-footer;
+    & .is-active {
+      color: $primary;
+      font-weight: $bold;
+    }
+  }
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: $size-2;
+    margin-top: 100%;
+  }
+}
+
+.close-burger {
+  width: 32px;
+  height: 32px;
+  background-color: $bg-footer-low;
+  border-radius: $corner-full;
+  border-color: $transparent;
+  & span {
+    position: relative;
+    display: block;
+    width: 16px;
+    height: 16px;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 2px;
+      background-color: $white;
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+}
+@media (max-width: 1024px) {
+.header {
+
+    padding: $headline-small $size-5;
+
+    &__actions {
+
+      margin-left: auto;
+
+    }
+
+  }
+
+
+
+  .logo {
+
+    font-size: $headline-small;
+
+  }
+
+
+
+  .button {
+
+    padding: $btn-small;
+
+  }
+
+
+
+  .burger-menu {
+
+    &__header > .logo {
+
+      color: $white;
+
+    }
+
+    &_open {
+
+      display: flex;
+
+    }
+
+    &__button {
+
+      display: none;
+
+    }
+
+    &__button.button_ghost-white {
+
+      display: block;
+
+    }
+
+  }
+
+
+
+  .burger-menu__header > .logo {
+
+    color: $white;
+
+  }
+
+
+
+  .header__actions .header__button.button_ghost,
+
+  .header__nav {
+
+    display: none;
+
+  }
+
+
+
+  .burger {
+
+    display: block;
+
+  }
+}
+@media (max-width: 480px) {
+.header {
+
+    gap: 0;
+
+    justify-content: space-between;
+
+    padding: $size-2;
+
+    &__button {
+
+      display: none;
+
+    }
+
+    &__actions {
+
+      display: none;
+
+    }
+
+  }
+
+
+
+  .logo__icon {
+
+    width: 28px;
+
+    height: 28px;
+
+  }
+
+
+
+  .burger-menu {
+
+    right: 0;
+
+    &__actions {
+
+      margin-top: auto;
+
+    }
+
+    &__button {
+
+      display: block;
+
+    }
+
+  }
+}
+

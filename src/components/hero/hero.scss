@@ -1,0 +1,146 @@
+﻿@use '../../styles/variables' as *;
+
+.hero {
+  min-height: 627px;
+  display: grid;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(30, 27, 58, 0.65);
+  isolation: isolate;
+  margin-bottom: $size-5;
+  &__art {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: url('../../assets/images/hero.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    opacity: 0.2;
+  }
+  &__card {
+    max-width: 640px;
+    margin-left: max($size-4, $size-15);
+    padding: $size-6;
+    background-color: $bg;
+    border: 3px solid $on-primary;
+    border-radius: $corner-extra-large;
+    box-shadow: $level-3;
+  }
+  &__title {
+    margin-bottom: $size-3;
+    font-size: $display-large;
+    line-height: 1.1;
+    color: $on-primary;
+  }
+  &__text {
+    margin-bottom: $size-3;
+    color: $on-bg;
+    font-size: $body-large;
+    font-weight: $medium;
+    line-height: 1.5;
+  }
+  &__button {
+    font-size: $body-large;
+    padding: $btn-large;
+  }
+}
+
+.title {
+  color: $on-primary;
+  font-size: $headline-large;
+  font-weight: $bold;
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 32px;
+    margin-right: $size-1;
+    border: 1.5px solid $on-primary;
+    border-radius: $corner-extra-small;
+    background: $primary;
+    vertical-align: -6px;
+  }
+}
+@media (max-width: 1024px) {
+.hero {
+
+    min-height: 383px;
+
+    margin-bottom: $size-3;
+
+    &__card {
+
+      max-width: 480px;
+
+      padding: $size-3;
+
+      margin-left: $size-5;
+
+      margin-right: $size-5;
+
+    }
+
+    &__title {
+
+      font-size: $display-medium;
+
+      line-height: 1.15;
+
+      margin-bottom: $size-2;
+
+    }
+
+    &__text {
+
+      margin-bottom: $size-2;
+
+      font-size: $body-small;
+
+      line-height: 1.4;
+
+    }
+
+    &__button {
+
+      padding: $btn-medium;
+
+    }
+
+  }
+}
+@media (max-width: 480px) {
+.hero {
+
+    min-height: 331px;
+
+    margin-bottom: $size-2;
+
+    &__title {
+
+      font-size: $display-small;
+
+      margin-bottom: $size-2;
+
+    }
+
+    &__text {
+
+      font-size: $label-medium;
+
+      margin-bottom: $size-2;
+
+    }
+
+    &__button {
+
+      padding: $btn-small;
+
+      font-size: $label-medium;
+
+    }
+
+  }
+}
+
