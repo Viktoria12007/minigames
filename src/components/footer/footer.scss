@@ -1,0 +1,140 @@
+﻿@use '../../styles/variables' as *;
+
+.footer {
+  color: $on-bg-footer;
+  font-size: $body-small;
+  line-height: 1.5;
+  background-color: $bg-footer;
+  &__wrap {
+    padding: $size-5 $size-15;
+  }
+  &__top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: $size-3;
+    margin-bottom: $size-8;
+  }
+  & .logo {
+    color: $white;
+  }
+  &__text {
+    width: min(400px, 100%);
+    margin-top: $size-3;
+  }
+  &__links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $size-10;
+  }
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: $size-2;
+  }
+  &__title {
+    color: $white;
+    font-weight: $bold;
+    font-size: $body-medium;
+  }
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $size-2;
+  }
+  &__social-list {
+    display: flex;
+    gap: $size-2;
+  }
+  &__social-link {
+    display: block;
+    width: 40px;
+    height: 40px;
+    & > svg {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: $size-3;
+    padding-top: $size-3;
+    border-top: 1px solid $bg-footer-low;
+    &-link {
+      display: flex;
+      align-items: center;
+      gap: $size-1;
+    }
+    &-icon {
+      width: 24px;
+      height: 24px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      &_RS {
+        background-image: url('../../assets/images/rs-logo-container.svg');
+      }
+      &_student-nickname {
+        background-image: url('../../assets/images/github-icon.svg');
+      }
+    }
+  }
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+  .footer {
+    &__wrap {
+      padding: $size-5;
+    }
+    &__top {
+      grid-template-columns: 1fr;
+      gap: $size-3;
+      margin-bottom: $size-5;
+    }
+    &__links {
+      gap: $size-5;
+    }
+    &__social-link {
+      width: 32px;
+      height: 32px;
+      & > svg {
+        width: 32px;
+        height: 32px;
+      }
+    }
+    &__bottom {
+      gap: $size-05;
+      padding-top: $size-2;
+      flex-wrap: wrap;
+      &-icon {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    &__wrap {
+      padding: $size-4 $size-2;
+    }
+    &__top {
+      margin-bottom: $size-3;
+    }
+    &__bottom {
+      gap: $size-1 $size-2;
+      padding-top: $size-1;
+      & > span:first-child {
+        flex-basis: 100%;
+      }
+      & > span:last-child {
+        display: none;
+      }
+    }
+  }
+}
