@@ -137,170 +137,90 @@
     display: none;
   }
 }
+
 @media (max-width: 1024px) {
-.games {
-
+  .games {
     padding: 0 $size-5;
-
     margin-bottom: $size-6;
-
     &__heading {
-
       margin-bottom: $size-3;
-
     }
-
     &__button {
-
       position: relative;
-
       width: 40px;
-
       height: 40px;
-
     }
-
     &__button_prev::after,
-
     &__button_next::after {
-
       width: 18px;
-
       height: 22px;
-
     }
-
     &__track {
-
       gap: 7.5px;
-
     }
-
     &__card {
-
       height: 280px;
-
       border-radius: $corner-large;
-
       &:first-child {
-
         flex-basis: 15.5%;
-
       }
-
       &:nth-child(2) {
-
         flex-basis: 65.7%;
-
       }
-
       &:nth-child(3) {
-
         flex-basis: 15.5%;
-
       }
-
     }
-
     &__card-info {
-
       font-size: $body-large;
-
     }
-
     &__rating {
-
       font-size: $body-small;
-
     }
-
     &__likes {
-
       font-size: $body-small;
-
     }
-
     &__rating::before,
-
     &__likes::before {
-
       vertical-align: -4px;
-
     }
-
   }
 }
+
 @media (max-width: 480px) {
-.games {
-
+  .games {
     padding: 0 $size-2;
-
     margin-bottom: $size-4;
-
-
-
     &__heading {
-
       margin-bottom: $size-2;
-
     }
-
     &__slider-controls {
-
       display: none;
-
     }
-
     &__track {
-
       gap: 5.5px;
-
     }
-
     &__card {
-
       height: 200px;
-
       &:first-child {
-
         flex-basis: 16%;
-
       }
-
       &:nth-child(2) {
-
         flex-basis: 64%;
-
       }
-
       &:nth-child(3) {
-
         flex-basis: 16%;
-
       }
-
     }
-
     &__rating::before,
-
     &__likes::before {
-
       vertical-align: -5px;
-
     }
-
     &__rating {
-
       font-size: $label-medium;
-
     }
-
     &__likes {
-
       font-size: $label-medium;
-
     }
-
   }
 }
-

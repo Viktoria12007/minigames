@@ -21,6 +21,3 @@ export function createDeveloper(): HTMLElement {
   add(section, art, card);
   return section;
 }
-
-
-

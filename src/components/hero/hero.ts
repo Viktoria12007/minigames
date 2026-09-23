@@ -21,6 +21,3 @@ export function createHero() {
   add(hero, art, card);
   return hero;
 }
-
-
-

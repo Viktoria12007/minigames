@@ -34,6 +34,3 @@ export function createGamesSection(): HTMLElement {
   add(section, heading, track);
   return section;
 }
-
-
-

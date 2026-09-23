@@ -1,5 +1,4 @@
-﻿
-@use '../../styles/variables' as *;
+﻿@use '../../styles/variables' as *;
 
 .modal {
   display: none;
@@ -182,7 +181,3 @@
     transform: translateY(0) scale(1);
   }
 }
-
-
-
-

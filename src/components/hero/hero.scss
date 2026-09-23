@@ -63,84 +63,48 @@
     vertical-align: -6px;
   }
 }
+
 @media (max-width: 1024px) {
-.hero {
-
+  .hero {
     min-height: 383px;
-
     margin-bottom: $size-3;
-
     &__card {
-
       max-width: 480px;
-
       padding: $size-3;
-
       margin-left: $size-5;
-
       margin-right: $size-5;
-
     }
-
     &__title {
-
       font-size: $display-medium;
-
       line-height: 1.15;
-
       margin-bottom: $size-2;
-
     }
-
     &__text {
-
       margin-bottom: $size-2;
-
       font-size: $body-small;
-
       line-height: 1.4;
-
     }
-
     &__button {
-
       padding: $btn-medium;
-
     }
-
   }
 }
+
 @media (max-width: 480px) {
-.hero {
-
+  .hero {
     min-height: 331px;
-
     margin-bottom: $size-2;
-
     &__title {
-
       font-size: $display-small;
-
       margin-bottom: $size-2;
-
     }
-
     &__text {
-
       font-size: $label-medium;
-
       margin-bottom: $size-2;
-
     }
-
     &__button {
-
       padding: $btn-small;
-
       font-size: $label-medium;
-
     }
-
   }
 }
-

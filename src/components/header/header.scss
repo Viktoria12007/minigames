@@ -174,142 +174,77 @@
     }
   }
 }
+
 @media (max-width: 1024px) {
-.header {
-
+  .header {
     padding: $headline-small $size-5;
-
     &__actions {
-
       margin-left: auto;
-
     }
-
   }
-
-
 
   .logo {
-
     font-size: $headline-small;
-
   }
-
-
 
   .button {
-
     padding: $btn-small;
-
   }
-
-
 
   .burger-menu {
-
     &__header > .logo {
-
       color: $white;
-
     }
-
     &_open {
-
       display: flex;
-
     }
-
     &__button {
-
       display: none;
-
     }
-
     &__button.button_ghost-white {
-
       display: block;
-
     }
-
   }
-
-
 
   .burger-menu__header > .logo {
-
     color: $white;
-
   }
-
-
 
   .header__actions .header__button.button_ghost,
-
   .header__nav {
-
     display: none;
-
   }
-
-
 
   .burger {
-
     display: block;
-
   }
 }
+
 @media (max-width: 480px) {
-.header {
-
+  .header {
     gap: 0;
-
     justify-content: space-between;
-
     padding: $size-2;
-
     &__button {
-
       display: none;
-
     }
-
     &__actions {
-
       display: none;
-
     }
-
   }
-
-
 
   .logo__icon {
-
     width: 28px;
-
     height: 28px;
-
   }
-
-
 
   .burger-menu {
-
     right: 0;
-
     &__actions {
-
       margin-top: auto;
-
     }
-
     &__button {
-
       display: block;
-
     }
-
   }
 }
-

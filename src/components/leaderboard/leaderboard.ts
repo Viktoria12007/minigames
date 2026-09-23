@@ -86,6 +86,3 @@ export function createLeaderboard(): HTMLElement {
   add(section, title, wrap);
   return section;
 }
-
-
-

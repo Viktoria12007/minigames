@@ -1,5 +1,4 @@
-﻿
-export function element<K extends keyof HTMLElementTagNameMap>(
+﻿export function element<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   className?: string,
   text?: string,
@@ -25,6 +24,3 @@ export function link(text: string, href: string, className?: string): HTMLAnchor
 export function button(text: string, className?: string): HTMLButtonElement {
   return element('button', className, text);
 }
-
-
-

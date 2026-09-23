@@ -69,106 +69,59 @@
     color: $on-bg-low;
   }
 }
+
 @media (max-width: 1024px) {
-.developer {
-
+  .developer {
     grid-template-columns: 1fr;
-
     gap: $size-3;
-
     padding: 0 $size-5;
-
     margin-bottom: $size-3;
-
     &__image {
-
       height: 300px;
-
     }
-
     &__card {
-
       padding: $size-4;
-
     }
-
     &__title {
-
       margin-bottom: $size-2;
-
     }
-
     &__text {
-
       max-width: 480px;
-
       font-size: $body-small;
-
       margin-bottom: $size-2;
-
     }
-
     &__button {
-
       font-size: $body-small;
-
       padding: $btn-medium;
-
       box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.1);
-
       margin-bottom: $size-2;
-
       &::before {
-
         width: 12px;
-
         height: 12px;
-
       }
-
     }
-
     &__contact {
-
       font-size: $label-medium;
-
     }
-
   }
 }
+
 @media (max-width: 480px) {
-.developer {
-
+  .developer {
     gap: $size-2;
-
     padding: 0 $size-2;
-
     margin-bottom: $size-2;
-
     &__image {
-
       height: 227px;
-
     }
-
     &__text {
-
       font-size: $body-small;
-
       margin-bottom: $size-2;
-
     }
-
     &__button {
-
       font-size: $label-medium;
-
       padding: $btn-small;
-
       margin-bottom: $size-2;
-
     }
-
   }
 }
-

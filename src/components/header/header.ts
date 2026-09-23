@@ -73,7 +73,3 @@ export function createBurgerMenu(): HTMLElement {
   add(root, headerBurger, nav, actions);
   return root;
 }
-
-
-
-

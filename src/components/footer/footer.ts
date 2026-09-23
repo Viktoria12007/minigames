@@ -115,6 +115,3 @@ export function createFooter(): HTMLElement {
   add(root, wrap);
   return root;
 }
-
-
-
