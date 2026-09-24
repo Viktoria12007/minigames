@@ -63,9 +63,9 @@ export function createLeaderboard(): HTMLElement {
       element(
         'span',
         'leaderboard__streak_desktop',
-        `рџ”Ґ ${leader.streakDays} ${leader.streakDays > 1 ? 'days' : 'day'}`,
+        `🔥 ${leader.streakDays} ${leader.streakDays > 1 ? 'days' : 'day'}`,
       ),
-      element('span', 'leaderboard__streak_mobile', `рџ”Ґ ${leader.streakDays}d`),
+      element('span', 'leaderboard__streak_mobile', `🔥 ${leader.streakDays}d`),
     );
     const row = [
       element('td', '', `# ${leader.rank}`),
