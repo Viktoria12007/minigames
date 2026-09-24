@@ -10,6 +10,7 @@
 @use '../components/auth/auth';
 @use '../components/intro/intro';
 @use '../components/cards/cards';
+@use '../components/details-dialog/detailsDialog';
 @use '../components/pagination/pagination';
 
 * {
@@ -59,7 +60,8 @@ p {
 
 .container {
   max-width: $content-width;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (max-width: 1024px) {
