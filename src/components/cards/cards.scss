@@ -1,0 +1,173 @@
+@use '../../styles/variables' as *;
+
+.library-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $size-3;
+}
+
+.library-card {
+  display: grid;
+  grid-template-columns: 38% 1fr;
+  min-height: 200px;
+  overflow: hidden;
+  border: 2.5px solid $on-primary;
+  border-radius: $corner-large;
+  background-color: $white;
+  box-shadow: $level-1;
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  &__content {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-width: 0;
+    padding: $size-2;
+  }
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: $size-2;
+    min-width: 0;
+    margin-bottom: $body-large;
+  }
+  &__name {
+    overflow: hidden;
+    font-size: $headline-medium;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  &__category {
+    padding: $size-05 $size-1;
+    border: 1.5px solid $on-primary;
+    border-radius: $corner-extra-large;
+    font-size: $label-medium;
+    font-weight: $bold;
+    text-transform: capitalize;
+    background-color: $secondary;
+  }
+  &__price {
+    margin-left: auto;
+    color: $on-primary;
+    font-size: $headline-medium;
+    white-space: nowrap;
+    &_free {
+      color: $price-free;
+    }
+  }
+  &__description {
+    display: -webkit-box;
+    overflow: hidden;
+    color: $on-bg;
+    font-size: $body-medium;
+    font-weight: $medium;
+    line-height: 1.4;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    margin-bottom: $body-large;
+  }
+  &__meta {
+    display: flex;
+    gap: $size-3;
+    align-items: center;
+    font-size: $body-small;
+    font-weight: $bold;
+    color: $on-primary;
+  }
+  &__rating::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 19px;
+    margin-right: $size-05;
+    vertical-align: -5px;
+    background: url('../../assets/images/star.svg') no-repeat;
+  }
+  &__likes::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 19px;
+    margin-right: $size-05;
+    vertical-align: -5px;
+    background: url('../../assets/images/heart.svg') no-repeat;
+  }
+  &__details {
+    position: absolute;
+    right: $size-2;
+    bottom: $size-2;
+    padding: $btn-medium;
+  }
+}
+
+@media (max-width: 1300px) {
+  .library-list {
+    grid-template-columns: 1fr;
+  }
+  .library-card {
+    min-height: 152px;
+    &__name {
+      font-size: $headline-small;
+    }
+    &__price {
+      font-size: $headline-small;
+    }
+    &__description {
+      font-size: $body-small;
+    }
+    &__meta {
+      font-size: $label-medium;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .library-list {
+    gap: $size-2;
+  }
+  .library-card {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    &__image {
+      height: 160px;
+    }
+    &__content {
+      min-height: 232px;
+    }
+    &__heading {
+      gap: $size-1;
+      flex-wrap: wrap;
+    }
+    &__name {
+      flex-basis: 100%;
+      font-size: $headline-small;
+    }
+    &__price {
+      position: absolute;
+      right: $size-2;
+      bottom: $size-9;
+    }
+    &__description {
+      -webkit-line-clamp: 2;
+    }
+    &__meta {
+      margin-bottom: $size-2;
+    }
+    //&__rating::before,
+    //.library-card__likes::before {
+    //  width: 14px;
+    //  height: 14px;
+    //  vertical-align: -3px;
+    //}
+    &__details {
+      position: static;
+      width: 100%;
+      //margin-top: 8px;
+      padding: $btn-medium;
+      //font-size: 10px;
+    }
+  }
+}
