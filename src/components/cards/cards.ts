@@ -24,7 +24,11 @@ function createGameCard(game: Game, openDetails: (game: Game) => void): HTMLElem
   const heading = element('div', 'library-card__heading');
   const name = element('h2', 'library-card__name', game.name);
   const category = element('span', 'library-card__category', game.category);
-  const price = element('strong', `library-card__price ${game.price === 'Free' && 'library-card__price_free'}`, game.price);
+  const price = element(
+    'strong',
+    `library-card__price ${game.price === 'Free' && 'library-card__price_free'}`,
+    game.price,
+  );
   const description = element('p', 'library-card__description', game.shortDescription);
   const meta = element('div', 'library-card__meta');
   const details = button('Details', 'library-card__details button');
