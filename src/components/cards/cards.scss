@@ -4,6 +4,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: $size-3;
+  margin-bottom: $size-5;
 }
 
 .library-card {
@@ -127,6 +128,7 @@
 @media (max-width: 600px) {
   .library-list {
     gap: $size-2;
+    margin-bottom: $size-3;
   }
   .library-card {
     grid-template-columns: 1fr;
@@ -156,18 +158,10 @@
     &__meta {
       margin-bottom: $size-2;
     }
-    //&__rating::before,
-    //.library-card__likes::before {
-    //  width: 14px;
-    //  height: 14px;
-    //  vertical-align: -3px;
-    //}
     &__details {
       position: static;
       width: 100%;
-      //margin-top: 8px;
       padding: $btn-medium;
-      //font-size: 10px;
     }
   }
 }

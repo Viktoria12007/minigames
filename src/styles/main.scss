@@ -10,6 +10,7 @@
 @use '../components/auth/auth';
 @use '../components/intro/intro';
 @use '../components/cards/cards';
+@use '../components/pagination/pagination';
 
 * {
   box-sizing: border-box;
