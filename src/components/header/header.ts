@@ -56,19 +56,31 @@ export function createBurgerMenu(): HTMLElement {
   });
   add(headerBurger, createLogo(), close);
   const nav = element('nav', 'burger-menu__navigation');
+  const list = element('ul', 'burger-menu__list');
   const actions = element('div', 'burger-menu__actions');
   nav.setAttribute('aria-label', 'Primary navigation');
-  add(
-    nav,
-    link('Home', '#home', location.hash === '#home' ? 'is-active' : ''),
-    link('Library', '#library', location.hash === '#library' ? 'is-active' : ''),
-    link('Tournaments', '#tournaments', location.hash === '#tournaments' ? 'is-active' : ''),
-    link('Community', '#community', location.hash === '#community' ? 'is-active' : ''),
-  );
+  const headerLinks = [
+    ['Home', '#home', location.hash === '#home' ? 'is-active' : ''],
+    ['Library', '#library', location.hash === '#library' ? 'is-active' : ''],
+    ['Tournaments', '#tournaments', location.hash === '#tournaments' ? 'is-active' : ''],
+    ['Community', '#community', location.hash === '#community' ? 'is-active' : ''],
+  ];
+  for (const [text, href, className] of headerLinks) {
+    const li = element('li', 'burger-menu__item');
+    add(li, link(text, href, `burger-menu__link ${className}`));
+    add(list, li);
+  }
+  add(nav, list);
   const login = button('Log In', 'burger-menu__button button button_ghost-white');
   const register = button('Sign Up', 'burger-menu__button button');
   login.dataset.auth = 'login';
   register.dataset.auth = 'register';
+  login.addEventListener('click', () => {
+    document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open');
+  });
+  register.addEventListener('click', () => {
+    document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open');
+  });
   add(actions, login, register);
   add(root, headerBurger, nav, actions);
   return root;
