@@ -50,7 +50,7 @@ export default function createCards(details: {
   root: HTMLElement;
   open: (game: Game) => void;
 }): HTMLElement {
-  const cards = element('section', 'library-list');
+  const cards = element('div', 'library-list');
 
   const renderCards = () => {
     cards.replaceChildren(...libraryGames.map((game) => createGameCard(game, details.open)));

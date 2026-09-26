@@ -47,7 +47,6 @@ export function createGamesSection(details: DetailsDialog): HTMLElement {
   previous.setAttribute('aria-label', 'Previous games');
   next.setAttribute('aria-label', 'Next games');
   track.setAttribute('aria-roledescription', 'carousel');
-  track.setAttribute('aria-label', 'Featured games');
 
   const cards = featuredGames.map((game) => {
     const card = element('article', 'games__card');
@@ -57,7 +56,6 @@ export function createGamesSection(details: DetailsDialog): HTMLElement {
     const rating = element('div', 'games__rating', `${game.rating}`);
     const likes = element('div', 'games__likes', formatLikes(game.likesCount));
     card.tabIndex = 0;
-    card.setAttribute('role', 'button');
     card.setAttribute('aria-label', `Open details for ${game.name}`);
     image.src = `${import.meta.env.BASE_URL}${game.cardImage.slice(1)}`;
     image.alt = game.name;

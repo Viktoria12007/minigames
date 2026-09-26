@@ -9,6 +9,8 @@ export default function createLibraryPage() {
   main.id = 'library';
   const { intro, controls } = createIntro();
   const details = createDetailsDialog();
-  add(main, intro, controls, createCards(details), createPagination(), details.root);
+  const section = element('section', 'library-page__section');
+  add(section, intro, controls, createCards(details), createPagination());
+  add(main, section, details.root);
   return main;
 }
