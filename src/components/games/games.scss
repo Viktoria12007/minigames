@@ -139,7 +139,9 @@
 }
 
 @container (max-width: 250px) {
-  .games__name, .games__rating, .games__likes {
+  .games__name,
+  .games__rating,
+  .games__likes {
     display: none;
   }
 }
