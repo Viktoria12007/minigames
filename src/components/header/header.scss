@@ -52,7 +52,7 @@
   padding: $btn-medium;
   border: $border-primary;
   border-radius: $corner-small;
-  background: $primary;
+  background-color: $primary;
   cursor: pointer;
   transition: $transition;
   &:hover {
@@ -64,23 +64,23 @@
 }
 
 .button_ghost {
-  background: $transparent;
-  &.button:hover {
-    background-color: $primary-low;
-  }
+  background-color: $transparent;
+  &.button:hover,
   &.button:active {
-    background-color: $primary-low;
+    background-color: $surface;
   }
 }
 
 .button_ghost-white {
   color: $white;
-  background: $transparent;
+  background-color: $transparent;
   border-color: $white;
-  &.button:hover {
+  &:hover {
+    background-color: $transparent;
     border-color: $primary;
   }
-  &.button:active {
+  &:active {
+    background-color: $transparent;
     border-color: $primary;
   }
 }
@@ -92,13 +92,18 @@
   padding: 6px;
   border: $border-primary;
   border-radius: $corner-small;
-  background: $transparent;
+  background-color: $transparent;
   cursor: pointer;
+  transition: $transition;
   & span {
     display: block;
     height: 2px;
     background: $on-primary;
     margin: 3px 0;
+  }
+  &:hover,
+  &:active {
+    background-color: $surface;
   }
 }
 
@@ -124,12 +129,25 @@
     justify-content: space-between;
     align-items: center;
   }
-  &__navigation {
+  &__list {
     display: flex;
     flex-direction: column;
     gap: $size-3;
     color: $on-bg-footer;
+    font-weight: $medium;
     & .is-active {
+      color: $primary;
+      font-weight: $bold;
+    }
+  }
+  &__link {
+    transition: $transition;
+    &:hover,
+    &:active {
+      color: $primary;
+      text-decoration: underline;
+    }
+    &.is-active {
       color: $primary;
       font-weight: $bold;
     }
@@ -146,14 +164,14 @@
   width: 32px;
   height: 32px;
   background-color: $bg-footer-low;
-  border-radius: $corner-full;
-  border-color: $transparent;
+  border-radius: $corner-small;
+  border: 2px solid $bg-footer-low;
+  transition: $transition;
   & span {
     position: relative;
     display: block;
     width: 16px;
     height: 16px;
-
     &::before,
     &::after {
       content: '';
@@ -164,14 +182,17 @@
       height: 2px;
       background-color: $white;
     }
-
     &::before {
       transform: translate(-50%, -50%) rotate(45deg);
     }
-
     &::after {
       transform: translate(-50%, -50%) rotate(-45deg);
     }
+  }
+  &:hover,
+  &:active {
+    background-color: $bg-footer-lowest;
+    border-color: $primary;
   }
 }
 
