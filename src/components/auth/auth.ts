@@ -26,7 +26,7 @@ function field(
 export function createAuthModal(): HTMLDivElement {
   const root = element('div', 'modal');
   const backdrop = element('div', 'modal__backdrop');
-  const dialog = element('section', 'auth__dialog');
+  const dialog = element('div', 'auth__dialog');
   const tabs = element('div', 'auth__tabs');
   root.setAttribute('aria-hidden', 'true');
   backdrop.dataset.closeModal = '';

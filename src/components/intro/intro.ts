@@ -4,10 +4,10 @@ const categories = ['All Games', 'Puzzle', 'Card', 'Match', 'Farm', 'Strategy', 
 const sortOptions = ['Rating ↑', 'Rating ↓', 'Name A→Z', 'Name Z→A'];
 
 export default function createIntro() {
-  const intro = element('section', 'library-page__intro');
+  const intro = element('div', 'library-page__intro');
   const title = element('h1', 'library-page__title', 'Game Library');
   const lead = element('p', 'library-page__lead', 'Browse our collection of casual mini-games');
-  const controls = element('section', 'library-controls');
+  const controls = element('div', 'library-controls');
   const chips = element('div', 'library-controls__chips');
   const sort = element('div', 'library-controls__sort');
   const sortList = element('div', 'library-controls__sort-list');

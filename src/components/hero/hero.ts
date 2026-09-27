@@ -14,7 +14,7 @@ export function createHero() {
     element(
       'p',
       'hero__text',
-      'Discover hundreds of curated casual mini-games. Play instantly in your browser вЂ” puzzle, match 3, farm, and board classics.',
+      'Discover hundreds of curated casual mini-games. Play instantly in your browser — puzzle, match 3, farm, and board classics.',
     ),
     link('Browse Library', '#library', 'hero__button button'),
   );
