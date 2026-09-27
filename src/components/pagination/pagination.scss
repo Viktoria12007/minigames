@@ -1,0 +1,51 @@
+@use '../../styles/variables' as *;
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: $size-2;
+  &__button {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: $border-primary;
+    border-radius: $corner-full;
+    background-color: $white;
+    color: $on-primary;
+    font-size: $label-large;
+    font-weight: $bold;
+    cursor: pointer;
+    transition: $transition;
+  }
+  &__button:hover {
+    background-color: $surface;
+  }
+  &__button:active {
+    color: $white;
+    background: $bg-footer-low;
+  }
+  &__button.is-active {
+    color: $white;
+    background: $bg-footer-low;
+  }
+  &__button:disabled {
+    border-color: $outline;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 1024px) {
+  .pagination {
+    gap: $size-1;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagination {
+    &__button:nth-child(5) {
+      display: none;
+    }
+  }
+}

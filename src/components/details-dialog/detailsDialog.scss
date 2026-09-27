@@ -1,0 +1,379 @@
+@use '../../styles/variables' as *;
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.game-dialog {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  background: rgb(0 0 0 / 0.64);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: $transition;
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+    .game-dialog__panel {
+      transform: translateY(0) scale(1);
+    }
+  }
+  &__panel {
+    width: 600px;
+    max-width: 100%;
+    max-height: calc(100vh - 32px);
+    overflow: hidden;
+    overflow-y: auto;
+    border: 1px solid $outline-variant;
+    border-radius: $corner-extra-large;
+    background-color: $bg;
+    box-shadow: $level-3;
+    transform: translateY(16px) scale(0.98);
+    transition: $transition;
+  }
+  &__hero {
+    position: relative;
+    height: 220px;
+  }
+  &__hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  &__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: $border-primary;
+    border-radius: $corner-full;
+    box-shadow: 2px 2px 0 $on-primary;
+    color: $on-primary;
+    font-size: $headline-medium;
+    font-weight: $regular;
+    line-height: 1;
+    background-color: $white;
+    cursor: pointer;
+    transition: $transition;
+    &:hover {
+      background-color: $surface;
+    }
+    &:active {
+      background-color: $surface;
+    }
+  }
+  &__content {
+    padding: $size-3;
+  }
+  &__title {
+    color: $on-primary;
+    font-size: $display-medium;
+  }
+  &__stats {
+    display: inline-flex;
+    margin-left: $size-2;
+    color: $on-primary;
+    font-size: $body-small;
+    font-weight: $bold;
+  }
+  &__rating {
+    color: $primary;
+    margin-right: $size-2;
+  }
+  &__likes {
+    color: $like;
+  }
+  &__description {
+    margin-top: $size-3;
+    color: $on-bg;
+    font-size: $body-medium;
+    line-height: 1.26;
+  }
+  &__badges {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $size-2;
+    margin-top: $size-3;
+  }
+  &__badge {
+    display: grid;
+    gap: $size-1;
+    min-width: 0;
+    padding: $btn-small;
+    border: 1px solid $outline-variant;
+    border-radius: $corner-small;
+    background-color: $white;
+    box-shadow: 3px 3px 0 $on-primary;
+  }
+  &__badge-label {
+    color: $on-bg;
+    font-size: $label-medium;
+    text-transform: capitalize;
+  }
+  &__badge-value {
+    overflow: hidden;
+    color: $on-primary;
+    font-size: $body-small;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  &__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $size-2;
+    margin-top: $size-3;
+  }
+  &__play,
+  &__favorite {
+    border-radius: $corner-medium;
+    color: $on-primary;
+    font-size: $body-medium;
+    font-weight: $bold;
+    cursor: pointer;
+    box-shadow: $level-1;
+    transition: $transition;
+  }
+  &__play {
+    background-color: $primary;
+    border: $border-primary;
+  }
+  &__favorite {
+    display: inline-flex;
+    gap: $size-1;
+    align-items: center;
+    justify-content: center;
+    background-color: $white;
+    border: 1px solid $outline-variant;
+    &:hover,
+    &:active {
+      background: $surface;
+    }
+    &.is-favorite {
+      color: $like;
+      background-color: $transparent;
+    }
+  }
+  &__records,
+  &__comments {
+    margin-top: $size-3;
+  }
+  &__section-title {
+    color: $on-primary;
+    font-size: $body-medium;
+  }
+  &__record-list {
+    display: grid;
+    gap: $size-1;
+    margin-top: $size-2;
+  }
+  &__record {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr) auto auto;
+    gap: $size-2;
+    align-items: center;
+    min-height: 49px;
+    padding: $size-2;
+    border-radius: $corner-small;
+    background-color: $white;
+    color: $on-primary;
+    font-size: $body-small;
+  }
+  &__record-medal {
+    font-size: $label-extra-large;
+  }
+  &__record-score {
+    white-space: nowrap;
+  }
+  &__record-time,
+  &__comment-time {
+    color: $on-bg;
+    font-size: $label-medium;
+    white-space: nowrap;
+  }
+  &__form {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) 40px;
+    gap: $size-2;
+    align-items: center;
+    margin-top: $size-2;
+  }
+  &__avatar {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    border: 1px solid $on-primary;
+    border-radius: $corner-full;
+    color: $on-primary;
+    font-size: $label-medium;
+    &_current {
+      width: 40px;
+      height: 40px;
+      background-color: $primary;
+      font-size: $label-large;
+      font-weight: $bold;
+      border: 1.5px solid $on-primary;
+    }
+    &_0 {
+      background-color: $avatar-random-3;
+    }
+    &_1 {
+      background-color: $primary;
+    }
+    &_2 {
+      background-color: $avatar-random-1;
+    }
+  }
+  &__textarea {
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+    max-height: 88px;
+    padding: $btn-small;
+    resize: none;
+    overflow-y: auto;
+    border: 1px solid $on-primary;
+    border-radius: $corner-small;
+    color: $on-primary;
+    font: inherit;
+    font-size: $body-small;
+    line-height: 20px;
+    background-color: $white;
+    transition: $transition;
+    &::placeholder {
+      color: $text-placeholder;
+    }
+    &:focus-visible {
+      background-color: $surface-low;
+      outline: none;
+    }
+  }
+  &__submit {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    padding: $btn-icon;
+    border: 0;
+    border-radius: $corner-small;
+    color: $white;
+    font-size: $display-small;
+    line-height: 1;
+    background: $bg-footer-low;
+    cursor: pointer;
+    transition: $transition;
+    &:hover,
+    &:active {
+      background-color: $tertiary;
+    }
+    &:disabled {
+      color: $on-bg;
+      background-color: $outline-variant;
+    }
+  }
+  &__comment-list {
+    display: grid;
+    gap: $size-2;
+    margin-top: $size-2;
+  }
+  &__comment {
+    padding: $size-2;
+    border-radius: $corner-medium;
+    background-color: $white;
+    box-shadow: 3px 3px $on-primary;
+  }
+  &__comment-header {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    gap: $size-1;
+    align-items: center;
+  }
+  &__comment-author {
+    overflow: hidden;
+    color: $on-primary;
+    font-size: $body-small;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  &__comment-text {
+    margin-top: $size-1;
+    color: $on-primary;
+    font-size: $body-small;
+    line-height: 1.3;
+  }
+  &__like {
+    padding: 0;
+    margin-top: $size-1;
+    border: 0;
+    color: $on-primary;
+    font-size: $label-medium;
+    font-weight: $bold;
+    background-color: transparent;
+    cursor: pointer;
+    transition: $transition;
+    &:hover,
+    &:active {
+      background-color: $surface;
+    }
+    &.is-liked {
+      color: $like;
+    }
+  }
+}
+
+@media (min-width: 601px) {
+  .game-dialog__title,
+  .game-dialog__stats {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+@media (max-width: 600px) {
+  .game-dialog {
+    align-items: start;
+    &__panel {
+      width: 100%;
+      max-height: none;
+      min-height: 100%;
+      border: none;
+      border-radius: $corner-extra-large;
+      box-shadow: none;
+    }
+    &__hero {
+      height: 220px;
+    }
+    &__stats {
+      display: flex;
+      margin-top: $size-1;
+      margin-left: 0;
+    }
+    &__badges {
+      grid-template-columns: repeat(2, 1fr);
+      gap: $size-2;
+    }
+    &__actions {
+      grid-template-columns: minmax(0, 1fr) 52px;
+    }
+    &__favorite {
+      font-size: 30px;
+    }
+
+    &__favorite-label {
+      display: none;
+    }
+    &__record {
+      grid-template-columns: 18px minmax(0, 1fr) auto auto;
+    }
+  }
+}

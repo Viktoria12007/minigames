@@ -1,0 +1,166 @@
+@use '../../styles/variables' as *;
+
+.library-page {
+  padding: $size-5 $size-15;
+  &__intro {
+    margin-bottom: 61.5px;
+  }
+  &__title {
+    font-size: $display-large;
+    color: $on-primary;
+    margin-bottom: $size-1;
+  }
+  &__lead {
+    font-size: $body-large;
+    font-weight: $medium;
+    color: $on-bg;
+  }
+}
+
+.library-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: $size-2;
+  flex-wrap: wrap;
+  margin-bottom: $size-2;
+  &__chips {
+    display: flex;
+    gap: $size-2;
+    overflow-x: auto;
+    scrollbar-width: none;
+    white-space: nowrap;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  &__chip,
+  .library-controls__sort-button {
+    border: $border-primary;
+    border-radius: $corner-extra-large;
+    background: $white;
+    color: $on-primary;
+    font-size: $body-small;
+    font-weight: $bold;
+    cursor: pointer;
+    transition: $transition;
+  }
+  &__chip {
+    flex: 0 0 auto;
+    padding: $btn-small;
+  }
+  &__chip:hover,
+  .library-controls__chip.is-active {
+    background: $primary;
+  }
+  &__sort {
+    position: relative;
+    flex: 0 0 190px;
+  }
+  &__sort-button {
+    width: 100%;
+    padding: $btn-medium;
+    text-align: left;
+    &:hover {
+      background-color: $surface;
+    }
+    &:active {
+      background-color: $surface;
+    }
+  }
+  &__sort-list {
+    display: none;
+    position: absolute;
+    z-index: 3;
+    top: calc(100% + 5px);
+    font-size: $body-small;
+    font-weight: $medium;
+    color: $on-primary;
+    width: 100%;
+    border: $border-primary;
+    border-radius: $corner-medium;
+    background: $white;
+    box-shadow: $level-1;
+  }
+  &__sort.is-open .library-controls__sort-list {
+    display: grid;
+  }
+  &__sort-option {
+    padding: $size-2;
+    text-align: left;
+    background-color: $white;
+    border: none;
+    cursor: pointer;
+    transition: $transition;
+    &:not(:last-child) {
+      border-bottom: 1px solid $outline;
+    }
+    &:first-child {
+      border-top-left-radius: $corner-medium;
+      border-top-right-radius: $corner-medium;
+    }
+    &:last-child {
+      border-bottom-left-radius: $corner-medium;
+      border-bottom-right-radius: $corner-medium;
+    }
+  }
+  &__sort-option:hover {
+    background-color: $surface;
+  }
+  &__sort-option.is-active {
+    font-weight: $extra-bold;
+    background-color: $primary-low;
+    border-top: 1px solid $on-primary;
+    border-bottom: 1px solid $on-primary;
+  }
+}
+
+@media (max-width: 1024px) {
+  .library-page {
+    padding: $size-3 $size-5 $size-5 $size-5;
+    &__intro {
+      margin-bottom: $size-5;
+    }
+    &__title {
+      font-size: $display-medium;
+    }
+    &__lead {
+      font-size: $body-medium;
+    }
+  }
+
+  .library-controls {
+    &__sort {
+      width: 182px;
+    }
+  }
+}
+@media (max-width: 480px) {
+  .library-page {
+    padding: $size-2 $size-2 $size-3 $size-2;
+    &__intro {
+      margin-bottom: $size-2;
+    }
+    &__title {
+      font-size: $headline-medium;
+    }
+    &__lead {
+      font-size: $body-small;
+    }
+  }
+  .library-controls {
+    &__chips {
+      gap: $size-1;
+      //margin-right: -8px;
+    }
+    &__chip {
+      font-size: $label-medium;
+    }
+    &__sort {
+      flex-grow: 1;
+    }
+    &__sort-button {
+      padding: 12.5px 16px;
+      font-size: $label-medium;
+    }
+  }
+}
