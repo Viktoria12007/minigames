@@ -114,7 +114,6 @@ export function createGamesSection(details: DetailsDialog): HTMLElement {
     pointerStart = { x: event.clientX, y: event.clientY };
     didSwipe = false;
     clearTimer(true);
-    track.setPointerCapture(event.pointerId);
   });
   track.addEventListener('pointerup', (event) => {
     if (!pointerStart) return;
