@@ -1,5 +1,5 @@
 import { showSnackbar } from '../snackbar/snackbar';
-import { getApiData } from '../../shared/api';
+import { getApi } from '../../shared/api';
 import { add, button, element } from '../../shared/dom';
 
 type Leader = {
@@ -129,7 +129,7 @@ export function createLeaderboard(): HTMLElement {
   const load = async () => {
     content.replaceChildren(createState('loading'));
     try {
-      const leaders = await getApiData<Leader[]>('/leaderboard');
+      const { data: leaders } = await getApi<Leader[]>('/leaderboard');
       content.replaceChildren(leaders.length === 0 ? createState('empty') : createTable(leaders));
     } catch {
       content.replaceChildren(createState('error', () => void load()));
