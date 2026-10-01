@@ -1,5 +1,5 @@
 import { showSnackbar } from '../snackbar/snackbar';
-import { getApiData } from '../../shared/api';
+import { getApi } from '../../shared/api';
 import { add, button, element } from '../../shared/dom';
 
 export type FeaturedGame = {
@@ -187,7 +187,7 @@ export function createGamesSection(details: DetailsDialog): HTMLElement {
     controls.hidden = true;
     content.replaceChildren(createState('loading'));
     try {
-      const games = await getApiData<FeaturedGame[]>('/games?featured=true');
+      const { data: games } = await getApi<FeaturedGame[]>('/games?featured=true');
       if (games.length === 0) {
         content.replaceChildren(createState('empty'));
         return;
