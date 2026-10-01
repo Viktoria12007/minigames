@@ -5,9 +5,7 @@ export type ApiResponse<T, M> = {
   meta: M;
 };
 
-export async function getApi<T, M = undefined>(
-  path: string,
-): Promise<ApiResponse<T, M>> {
+export async function getApi<T, M = undefined>(path: string): Promise<ApiResponse<T, M>> {
   const response = await fetch(`${API_BASE_URL}${path}`);
 
   if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
