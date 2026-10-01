@@ -1,9 +1,9 @@
 import { add, button, element } from '../../shared/dom.ts';
 import commentsData from '../../data/comments-tukoni-forest-keepers.json';
 import gameData from '../../data/game-tukoni-forest-keepers.json';
-import games from '../../data/all-games-seed.json';
+import type { FeaturedGame } from '../games/games';
 
-type Game = (typeof games.data)[number];
+type Game = FeaturedGame;
 type Comment = (typeof commentsData.data)[number];
 
 function relativeTime(date: string): string {
