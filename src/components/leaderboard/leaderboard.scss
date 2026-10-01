@@ -12,6 +12,53 @@
     border-radius: $corner-large;
     box-shadow: $level-2;
   }
+  &__state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $size-2;
+    min-height: 430px;
+    padding: $size-4;
+    border: 2.5px solid $on-primary;
+    border-radius: $corner-large;
+    background: $white;
+    text-align: center;
+  }
+  &__state_loading {
+    align-items: stretch;
+    padding: 0;
+    overflow: hidden;
+  }
+  &__state_empty,
+  &__state_error {
+    flex-direction: column;
+  }
+  &__state_error {
+    border-color: $error;
+  }
+  &__state-title {
+    color: $on-primary;
+    font-size: $headline-small;
+    font-weight: $extra-bold;
+  }
+  &__state-text {
+    color: $on-bg-low;
+  }
+  &__retry {
+    padding: $btn-small;
+    border: $border-primary;
+    border-radius: $corner-small;
+    color: $on-primary;
+    background: $primary;
+    font-weight: $bold;
+    cursor: pointer;
+  }
+  &__skeleton {
+    flex: 1;
+    background: linear-gradient(90deg, $secondary 25%, $surface 50%, $secondary 75%);
+    background-size: 200% 100%;
+    animation: leaderboard-skeleton 1.2s infinite;
+  }
   &__table {
     width: 100%;
     border-collapse: collapse;
@@ -84,6 +131,12 @@
     &_5 {
       background: #d9d0ef;
     }
+  }
+}
+
+@keyframes leaderboard-skeleton {
+  to {
+    background-position: -200% 0;
   }
 }
 
