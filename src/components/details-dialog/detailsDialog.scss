@@ -26,6 +26,7 @@
     }
   }
   &__panel {
+    position: relative;
     width: 600px;
     max-width: 100%;
     max-height: calc(100vh - 32px);
@@ -48,6 +49,7 @@
     object-fit: cover;
   }
   &__close {
+    z-index: 1;
     position: absolute;
     top: 14px;
     right: 14px;
@@ -65,14 +67,12 @@
     background-color: $white;
     cursor: pointer;
     transition: $transition;
-    &:hover {
-      background-color: $surface;
-    }
+    &:hover,
     &:active {
       background-color: $surface;
     }
   }
-  &__content {
+  &__wrap {
     padding: $size-3;
   }
   &__title {
@@ -328,6 +328,53 @@
     &.is-liked {
       color: $like;
     }
+  }
+  &__state {
+    display: grid;
+    gap: $size-1;
+    padding: $size-3;
+    border: 1px solid $outline-variant;
+    border-radius: $corner-medium;
+    background-color: $white;
+    &_error {
+      border-color: $error;
+    }
+  }
+  &__state-title {
+    color: $on-primary;
+    font-size: $body-medium;
+    font-weight: $bold;
+  }
+  &__state-text {
+    color: $on-bg;
+    font-size: $body-small;
+  }
+  &__retry {
+    justify-self: start;
+    padding: $btn-small;
+    border: $border-primary;
+    border-radius: $corner-small;
+    color: $on-primary;
+    font: inherit;
+    font-weight: $bold;
+    background-color: $primary;
+    cursor: pointer;
+  }
+  &__skeleton {
+    height: 22px;
+    border-radius: $corner-small;
+    background: linear-gradient(90deg, $surface-low 25%, $surface 50%, $surface-low 75%);
+    background-size: 200% 100%;
+    animation: game-dialog-skeleton 1.2s ease-in-out infinite;
+    &:first-child {
+      height: 160px;
+    }
+  }
+}
+
+@keyframes game-dialog-skeleton {
+  to {
+    background-position: -200% 0;
   }
 }
 
