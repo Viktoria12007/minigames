@@ -129,7 +129,7 @@ function createComment(comment: GameComment, index: number): HTMLElement {
 
 export default function createDetailsDialog(): { root: HTMLElement; open: (game: Game) => void } {
   const root = element('div', 'game-dialog');
-  const panel = element('section', 'game-dialog__panel');
+  const panel = element('div', 'game-dialog__panel');
   const close = button('×', 'game-dialog__close');
   const dialogContent = element('div', 'game-dialog__content');
   let opener: HTMLElement | null = null;
@@ -154,6 +154,7 @@ export default function createDetailsDialog(): { root: HTMLElement; open: (game:
   const renderGame = (game: GameDetails, comments: HTMLElement) => {
     const hero = element('div', 'game-dialog__hero');
     const image = element('img', 'game-dialog__hero-image');
+    const dialogWrap = element('div', 'game-dialog__wrap');
     const title = element('h2', 'game-dialog__title', game.name);
     const stats = element('div', 'game-dialog__stats');
     const rating = element('span', 'game-dialog__rating', `☆ ${game.rating}`);
@@ -219,21 +220,13 @@ export default function createDetailsDialog(): { root: HTMLElement; open: (game:
       records.append(item);
     }
 
-    add(stats, rating, likes);
     add(hero, image);
+    add(stats, rating, likes);
     add(favorite, favoriteIcon, favoriteLabel);
     add(actions, play, favorite);
     add(recordsSection, recordsTitle, records);
-    dialogContent.replaceChildren(
-      hero,
-      title,
-      stats,
-      description,
-      badges,
-      actions,
-      recordsSection,
-      comments,
-    );
+    add(dialogWrap, title, stats, description, badges, actions, recordsSection, comments);
+    dialogContent.replaceChildren(hero, dialogWrap);
   };
 
   const load = async (selectedGame: Game, currentRequest: number) => {
