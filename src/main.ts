@@ -45,7 +45,11 @@ function renderPage(): void {
       : route.page === 'home'
         ? createHomePage(details, route)
         : createNotFoundPage(() => navigate({ page: 'home', game: undefined, auth: undefined }));
+
   const authModal = createAuthModal();
+
+  appElement.replaceChildren(createHeader(), createBurgerMenu(), main, createFooter(), authModal);
+
   const auth = initializeAuthModal(authModal, {
     onOpen(mode) {
       navigate({ auth: mode, game: undefined });
@@ -57,8 +61,6 @@ function renderPage(): void {
       navigate({ auth: mode }, true);
     },
   });
-
-  appElement.replaceChildren(createHeader(), createBurgerMenu(), main, createFooter(), authModal);
   if (route.auth) auth.open(route.auth);
 }
 
