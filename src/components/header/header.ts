@@ -1,10 +1,19 @@
 ﻿import { add, button, element, link } from '../../shared/dom';
 
 export function createLogo(): HTMLAnchorElement {
-  const node = link('', '#home', 'logo');
+  const node = link('', `${import.meta.env.BASE_URL}`, 'logo');
   node.setAttribute('aria-label', 'MiniGames home');
   add(node, element('div', 'logo__icon'), document.createTextNode('MiniGames'));
   return node;
+}
+
+function getLinks() {
+    return [
+        ['Home', `${import.meta.env.BASE_URL}`, location.pathname === `${import.meta.env.BASE_URL}` || location.pathname === `${import.meta.env.BASE_URL}home` ? 'is-active' : ''],
+        ['Library', `${import.meta.env.BASE_URL}library`, location.pathname === `${import.meta.env.BASE_URL}library` ? 'is-active' : ''],
+        ['Tournaments', `${import.meta.env.BASE_URL}tournaments`, location.pathname === `${import.meta.env.BASE_URL}tournaments` ? 'is-active' : ''],
+        ['Community', `${import.meta.env.BASE_URL}community`,  location.pathname === `${import.meta.env.BASE_URL}community` ? 'is-active' : ''],
+    ];
 }
 
 export function createHeader(): HTMLElement {
@@ -13,13 +22,7 @@ export function createHeader(): HTMLElement {
   const list = element('ul', 'header__list');
   const actions = element('div', 'header__actions');
   nav.setAttribute('aria-label', 'Primary navigation');
-  const headerLinks = [
-    ['Home', '#home', location.hash === '#home' ? 'is-active' : ''],
-    ['Library', '#library', location.hash === '#library' ? 'is-active' : ''],
-    ['Tournaments', '#tournaments', location.hash === '#tournaments' ? 'is-active' : ''],
-    ['Community', '#community', location.hash === '#community' ? 'is-active' : ''],
-  ];
-  for (const [text, href, className] of headerLinks) {
+  for (const [text, href, className] of getLinks()) {
     const li = element('li', 'header__item');
     add(li, link(text, href, `header__link ${className}`));
     add(list, li);
@@ -59,13 +62,7 @@ export function createBurgerMenu(): HTMLElement {
   const list = element('ul', 'burger-menu__list');
   const actions = element('div', 'burger-menu__actions');
   nav.setAttribute('aria-label', 'Primary navigation');
-  const headerLinks = [
-    ['Home', '#home', location.hash === '#home' ? 'is-active' : ''],
-    ['Library', '#library', location.hash === '#library' ? 'is-active' : ''],
-    ['Tournaments', '#tournaments', location.hash === '#tournaments' ? 'is-active' : ''],
-    ['Community', '#community', location.hash === '#community' ? 'is-active' : ''],
-  ];
-  for (const [text, href, className] of headerLinks) {
+  for (const [text, href, className] of getLinks()) {
     const li = element('li', 'burger-menu__item');
     add(li, link(text, href, `burger-menu__link ${className}`));
     add(list, li);
