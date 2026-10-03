@@ -23,7 +23,11 @@ const validSorts = new Set(['rating-desc', 'rating-asc', 'name-asc', 'name-desc'
 
 export function readRoute(url = new URL(location.href)): RouteState {
   let page: RoutePage;
-  if (url.pathname === `${import.meta.env.BASE_URL}` || url.pathname === `${import.meta.env.BASE_URL}home`) page = 'home';
+  if (
+    url.pathname === `${import.meta.env.BASE_URL}` ||
+    url.pathname === `${import.meta.env.BASE_URL}home`
+  )
+    page = 'home';
   else if (url.pathname === `${import.meta.env.BASE_URL}library`) page = 'library';
   else page = 'not-found';
 
@@ -44,7 +48,11 @@ export function readRoute(url = new URL(location.href)): RouteState {
 export function routeUrl(update: RouteUpdate, current = readRoute()): string {
   const state = { ...current, ...update };
   const pathname =
-    state.page === 'library' ? `${import.meta.env.BASE_URL}library` : state.page === 'home' ? `${import.meta.env.BASE_URL}` : location.pathname;
+    state.page === 'library'
+      ? `${import.meta.env.BASE_URL}library`
+      : state.page === 'home'
+        ? `${import.meta.env.BASE_URL}`
+        : location.pathname;
   const parameters = new URLSearchParams();
   if (state.page === 'library') {
     if (state.category !== defaultState.category) parameters.set('category', state.category);

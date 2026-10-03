@@ -23,28 +23,71 @@ export function createFooter(): HTMLElement {
         [
           'Home',
           `${import.meta.env.BASE_URL}`,
-          location.pathname === `${import.meta.env.BASE_URL}` || location.pathname === `${import.meta.env.BASE_URL}home` ? 'is-active' : '',
+          location.pathname === `${import.meta.env.BASE_URL}` ||
+          location.pathname === `${import.meta.env.BASE_URL}home`
+            ? 'is-active'
+            : '',
         ],
-        ['Library', `${import.meta.env.BASE_URL}library`, location.pathname === `${import.meta.env.BASE_URL}library` ? 'is-active' : ''],
-        ['Categories', `${import.meta.env.BASE_URL}categories`, location.pathname === `${import.meta.env.BASE_URL}categories` ? 'is-active' : ''],
-        ['Tournaments', `${import.meta.env.BASE_URL}tournaments`, location.pathname === `${import.meta.env.BASE_URL}tournaments` ? 'is-active' : ''],
+        [
+          'Library',
+          `${import.meta.env.BASE_URL}library`,
+          location.pathname === `${import.meta.env.BASE_URL}library` ? 'is-active' : '',
+        ],
+        [
+          'Categories',
+          `${import.meta.env.BASE_URL}categories`,
+          location.pathname === `${import.meta.env.BASE_URL}categories` ? 'is-active' : '',
+        ],
+        [
+          'Tournaments',
+          `${import.meta.env.BASE_URL}tournaments`,
+          location.pathname === `${import.meta.env.BASE_URL}tournaments` ? 'is-active' : '',
+        ],
       ],
     ],
     [
       'Company',
       [
-        ['About Us', `${import.meta.env.BASE_URL}about`, location.pathname === `${import.meta.env.BASE_URL}about` ? 'is-active' : ''],
-        ['Contact', `${import.meta.env.BASE_URL}contact`, location.pathname === `${import.meta.env.BASE_URL}contact` ? 'is-active' : ''],
-        ['Privacy Policy', `${import.meta.env.BASE_URL}privacy`, location.pathname === `${import.meta.env.BASE_URL}privacy` ? 'is-active' : ''],
-        ['Terms of Service', `${import.meta.env.BASE_URL}terms`, location.pathname === `${import.meta.env.BASE_URL}terms` ? 'is-active' : ''],
+        [
+          'About Us',
+          `${import.meta.env.BASE_URL}about`,
+          location.pathname === `${import.meta.env.BASE_URL}about` ? 'is-active' : '',
+        ],
+        [
+          'Contact',
+          `${import.meta.env.BASE_URL}contact`,
+          location.pathname === `${import.meta.env.BASE_URL}contact` ? 'is-active' : '',
+        ],
+        [
+          'Privacy Policy',
+          `${import.meta.env.BASE_URL}privacy`,
+          location.pathname === `${import.meta.env.BASE_URL}privacy` ? 'is-active' : '',
+        ],
+        [
+          'Terms of Service',
+          `${import.meta.env.BASE_URL}terms`,
+          location.pathname === `${import.meta.env.BASE_URL}terms` ? 'is-active' : '',
+        ],
       ],
     ],
     [
       'Community',
       [
-        ['Share', `${import.meta.env.BASE_URL}share`, location.pathname === `${import.meta.env.BASE_URL}share` ? 'is-active' : ''],
-        ['Chat', `${import.meta.env.BASE_URL}chat`, location.pathname === `${import.meta.env.BASE_URL}chat` ? 'is-active' : ''],
-        ['Feed', `${import.meta.env.BASE_URL}feed`, location.pathname === `${import.meta.env.BASE_URL}feed` ? 'is-active' : ''],
+        [
+          'Share',
+          `${import.meta.env.BASE_URL}share`,
+          location.pathname === `${import.meta.env.BASE_URL}share` ? 'is-active' : '',
+        ],
+        [
+          'Chat',
+          `${import.meta.env.BASE_URL}chat`,
+          location.pathname === `${import.meta.env.BASE_URL}chat` ? 'is-active' : '',
+        ],
+        [
+          'Feed',
+          `${import.meta.env.BASE_URL}feed`,
+          location.pathname === `${import.meta.env.BASE_URL}feed` ? 'is-active' : '',
+        ],
       ],
     ],
   ];

@@ -8,12 +8,31 @@ export function createLogo(): HTMLAnchorElement {
 }
 
 function getLinks() {
-    return [
-        ['Home', `${import.meta.env.BASE_URL}`, location.pathname === `${import.meta.env.BASE_URL}` || location.pathname === `${import.meta.env.BASE_URL}home` ? 'is-active' : ''],
-        ['Library', `${import.meta.env.BASE_URL}library`, location.pathname === `${import.meta.env.BASE_URL}library` ? 'is-active' : ''],
-        ['Tournaments', `${import.meta.env.BASE_URL}tournaments`, location.pathname === `${import.meta.env.BASE_URL}tournaments` ? 'is-active' : ''],
-        ['Community', `${import.meta.env.BASE_URL}community`,  location.pathname === `${import.meta.env.BASE_URL}community` ? 'is-active' : ''],
-    ];
+  return [
+    [
+      'Home',
+      `${import.meta.env.BASE_URL}`,
+      location.pathname === `${import.meta.env.BASE_URL}` ||
+      location.pathname === `${import.meta.env.BASE_URL}home`
+        ? 'is-active'
+        : '',
+    ],
+    [
+      'Library',
+      `${import.meta.env.BASE_URL}library`,
+      location.pathname === `${import.meta.env.BASE_URL}library` ? 'is-active' : '',
+    ],
+    [
+      'Tournaments',
+      `${import.meta.env.BASE_URL}tournaments`,
+      location.pathname === `${import.meta.env.BASE_URL}tournaments` ? 'is-active' : '',
+    ],
+    [
+      'Community',
+      `${import.meta.env.BASE_URL}community`,
+      location.pathname === `${import.meta.env.BASE_URL}community` ? 'is-active' : '',
+    ],
+  ];
 }
 
 export function createHeader(): HTMLElement {
