@@ -5,6 +5,11 @@ import type { FeaturedGame } from '../games/games';
 
 type Game = FeaturedGame;
 
+type DetailsDialogOptions = {
+  onOpen?: (slug: string) => void;
+  onClose?: () => void;
+};
+
 type GameDetails = {
   slug: string;
   name: string;
@@ -127,7 +132,11 @@ function createComment(comment: GameComment, index: number): HTMLElement {
   return item;
 }
 
-export default function createDetailsDialog(): { root: HTMLElement; open: (game: Game) => void } {
+export default function createDetailsDialog(options: DetailsDialogOptions = {}): {
+  root: HTMLElement;
+  open: (game: Game) => void;
+  openBySlug: (slug: string) => void;
+} {
   const root = element('div', 'game-dialog');
   const panel = element('div', 'game-dialog__panel');
   const close = button('×', 'game-dialog__close');
@@ -149,6 +158,7 @@ export default function createDetailsDialog(): { root: HTMLElement; open: (game:
     root.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
     opener?.focus();
+    options.onClose?.();
   };
 
   const renderGame = (game: GameDetails, comments: HTMLElement) => {
@@ -281,7 +291,7 @@ export default function createDetailsDialog(): { root: HTMLElement; open: (game:
     if (event.target === root) hide();
   });
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') hide();
+    if (event.key === 'Escape' && root.isConnected) hide();
   });
 
   add(panel, close, dialogContent);
@@ -290,12 +300,22 @@ export default function createDetailsDialog(): { root: HTMLElement; open: (game:
   return {
     root,
     open: (game) => {
+      options.onOpen?.(game.slug);
+      if (options.onOpen) return;
       opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       root.classList.add('is-open');
       root.setAttribute('aria-hidden', 'false');
       document.body.classList.add('no-scroll');
       close.focus();
       void load(game, ++requestId);
+    },
+    openBySlug: (slug) => {
+      opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      root.classList.add('is-open');
+      root.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('no-scroll');
+      close.focus();
+      void load({ slug } as Game, ++requestId);
     },
   };
 }
