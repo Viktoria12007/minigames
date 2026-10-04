@@ -21,8 +21,6 @@ type LibraryPageOptions = {
 };
 
 export default function createLibraryPage({ route, onRouteChange, details }: LibraryPageOptions) {
-  // const main = element('main', 'library-page container');
-  // main.id = 'library';
   const category = route.category;
   const sort = route.sort;
   let page = route.currentPage;
@@ -82,8 +80,6 @@ export default function createLibraryPage({ route, onRouteChange, details }: Lib
   };
 
   add(section, intro, controls, cards.root, pagination.root);
-  // add(main, section, details.root);
-  // if (route.game) details.openBySlug(route.game);
   void loadCategories();
   return [section];
 }
