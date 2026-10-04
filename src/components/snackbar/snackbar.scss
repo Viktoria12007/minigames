@@ -1,10 +1,15 @@
 @use '../../styles/variables' as *;
 
-.snackbar {
+.snackbar-list {
   position: fixed;
   z-index: 1000;
   right: $size-3;
   bottom: $size-3;
+  display: flex;
+  flex-direction: column;
+  gap: $size-2;
+}
+.snackbar {
   display: flex;
   align-items: center;
   gap: $size-2;
@@ -15,6 +20,7 @@
   color: $on-primary;
   background: $white;
   box-shadow: $level-2;
+  animation: fade-in 0.3s ease;
 
   &[data-variant='success'] {
     border-color: $price-free;
@@ -22,6 +28,10 @@
 
   &[data-variant='error'] {
     border-color: $error;
+  }
+
+  &[hidden] {
+    display: none;
   }
 
   &__message {
@@ -42,5 +52,14 @@
     &:hover {
       background: $surface;
     }
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
