@@ -136,7 +136,12 @@ function updateActiveLinks(): void {
   for (const link of document.querySelectorAll<HTMLAnchorElement>(
     '.header__link, .burger-menu__link, .footer__link',
   )) {
-    link.classList.toggle('is-active', location.pathname === link.getAttribute('href'));
+    const href = link.getAttribute('href');
+    const isHomeLink = href === import.meta.env.BASE_URL;
+    const isHomeRoute =
+      location.pathname === import.meta.env.BASE_URL ||
+      location.pathname === `${import.meta.env.BASE_URL}home`;
+    link.classList.toggle('is-active', isHomeLink ? isHomeRoute : location.pathname === href);
   }
 }
 
