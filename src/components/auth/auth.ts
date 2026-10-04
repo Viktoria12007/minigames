@@ -55,9 +55,11 @@ export function initializeAuthModal(
 ): {
   open: (mode: AuthMode) => void;
   close: () => void;
+  isOpenFor: (mode: AuthMode) => boolean;
 } {
   const authContent = modal.querySelector<HTMLDivElement>('.auth__content');
   const tabButtons = modal.querySelectorAll<HTMLButtonElement>('[data-tab]');
+  let currentMode: AuthMode | null = null;
 
   function setAuthMode(mode: AuthMode): void {
     if (!authContent) return;
@@ -146,16 +148,19 @@ export function initializeAuthModal(
 
   function openModal(mode: AuthMode): void {
     setAuthMode(mode);
+    currentMode = mode;
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('no-scroll');
   }
 
   function closeModal(): void {
+    const wasOpen = modal.classList.contains('is-open');
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
-    options.onClose?.();
+    currentMode = null;
+    if (wasOpen) options.onClose?.();
   }
 
   const dataAuthButtons = document.querySelectorAll<HTMLButtonElement>('[data-auth]');
@@ -163,7 +168,6 @@ export function initializeAuthModal(
   for (const item of dataAuthButtons) {
     item.addEventListener('click', () => {
       const mode = item.dataset.auth === 'register' ? 'register' : 'login';
-      console.log(options);
       options.onOpen?.(mode);
       openModal(mode);
     });
@@ -187,5 +191,9 @@ export function initializeAuthModal(
     if (event.key === 'Escape' && modal.isConnected && modal.classList.contains('is-open'))
       closeModal();
   });
-  return { open: openModal, close: closeModal };
+  return {
+    open: openModal,
+    close: closeModal,
+    isOpenFor: (mode) => modal.classList.contains('is-open') && currentMode === mode,
+  };
 }

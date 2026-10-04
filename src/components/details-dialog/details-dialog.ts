@@ -137,6 +137,7 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}):
   open: (game: Game) => void;
   openBySlug: (slug: string) => void;
   close: () => void;
+  isOpenFor: (slug: string) => boolean;
 } {
   const root = element('div', 'game-dialog');
   const panel = element('div', 'game-dialog__panel');
@@ -144,6 +145,7 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}):
   const dialogContent = element('div', 'game-dialog__content');
   let opener: HTMLElement | null = null;
   let requestId = 0;
+  let openedSlug: string | null = null;
 
   root.setAttribute('aria-hidden', 'true');
   panel.setAttribute('role', 'dialog');
@@ -155,6 +157,7 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}):
   const hide = () => {
     if (!root.classList.contains('is-open')) return;
     requestId += 1;
+    openedSlug = null;
     root.classList.remove('is-open');
     root.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
@@ -304,6 +307,7 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}):
       options.onOpen?.(game.slug);
       if (options.onOpen) return;
       opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      openedSlug = game.slug;
       root.classList.add('is-open');
       root.setAttribute('aria-hidden', 'false');
       document.body.classList.add('no-scroll');
@@ -311,13 +315,16 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}):
       void load(game, ++requestId);
     },
     openBySlug: (slug) => {
+      if (openedSlug === slug && root.classList.contains('is-open')) return;
       opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      openedSlug = slug;
       root.classList.add('is-open');
       root.setAttribute('aria-hidden', 'false');
       document.body.classList.add('no-scroll');
       close.focus();
       void load({ slug } as Game, ++requestId);
     },
-      close: hide,
+    close: hide,
+    isOpenFor: (slug) => root.classList.contains('is-open') && openedSlug === slug,
   };
 }
