@@ -12,9 +12,16 @@ const sortOptions = [
 type IntroOptions = {
   onCategoryChange: (category: string) => void;
   onSortChange: (sort: string) => void;
+  category: string;
+  sort: string;
 };
 
-export default function createIntro({ onCategoryChange, onSortChange }: IntroOptions) {
+export default function createIntro({
+  onCategoryChange,
+  onSortChange,
+  category,
+  sort: initialSort,
+}: IntroOptions) {
   const intro = element('div', 'library-page__intro');
   const title = element('h1', 'library-page__title', 'Game Library');
   const lead = element('p', 'library-page__lead', 'Browse our collection of casual mini-games');
@@ -24,8 +31,8 @@ export default function createIntro({ onCategoryChange, onSortChange }: IntroOpt
   const sortList = element('div', 'library-controls__sort-list');
   const sortButton = button('', 'library-controls__sort-button');
   let categories: Category[] = [];
-  let selectedCategory = 'all';
-  let selectedSort = 'rating-desc';
+  let selectedCategory = category;
+  let selectedSort = initialSort;
 
   const renderChips = () => {
     chips.replaceChildren(
@@ -74,7 +81,6 @@ export default function createIntro({ onCategoryChange, onSortChange }: IntroOpt
     controls,
     setCategories(apiCategories: Category[]) {
       categories = apiCategories;
-      selectedCategory = categories.find((category) => category.isDefault)?.slug ?? 'all';
       renderChips();
     },
   };

@@ -5,6 +5,7 @@ import createPagination from '../components/pagination/pagination.ts';
 import { showSnackbar } from '../components/snackbar/snackbar.ts';
 import { getApi } from '../shared/api.ts';
 import { add, element } from '../shared/dom.ts';
+import type { RouteState } from '../shared/router.ts';
 
 type GamesMeta = {
   page: number;
@@ -13,31 +14,31 @@ type GamesMeta = {
 
 const pageSize = 6;
 
-export default function createLibraryPage() {
-  const main = element('main', 'library-page container');
-  main.id = 'library';
-  const details = createDetailsDialog();
-  let category = 'all';
-  let sort = 'rating-desc';
-  let page = 1;
+type LibraryPageOptions = {
+  route: RouteState;
+  onRouteChange: (update: Partial<Pick<RouteState, 'category' | 'sort' | 'currentPage'>>) => void;
+  details: ReturnType<typeof createDetailsDialog>;
+};
+
+export default function createLibraryPage({ route, onRouteChange, details }: LibraryPageOptions) {
+  const category = route.category;
+  const sort = route.sort;
+  let page = route.currentPage;
   let requestId = 0;
   const cards = createCards(details);
   const pagination = createPagination((nextPage) => {
     if (nextPage === page || nextPage < 1) return;
-    page = nextPage;
-    void loadGames();
+    onRouteChange({ currentPage: nextPage });
   });
   const { intro, controls, setCategories } = createIntro({
     onCategoryChange(nextCategory) {
-      category = nextCategory;
-      page = 1;
-      void loadGames();
+      onRouteChange({ category: nextCategory, currentPage: 1 });
     },
     onSortChange(nextSort) {
-      sort = nextSort;
-      page = 1;
-      void loadGames();
+      onRouteChange({ sort: nextSort, currentPage: 1 });
     },
+    category,
+    sort,
   });
   const section = element('section', 'library-page__section');
 
@@ -71,7 +72,6 @@ export default function createLibraryPage() {
     try {
       const response = await getApi<Category[]>('/categories');
       setCategories(response.data);
-      category = response.data.find((item) => item.isDefault)?.slug ?? 'all';
       await loadGames();
     } catch {
       cards.error(() => void loadCategories());
@@ -80,7 +80,6 @@ export default function createLibraryPage() {
   };
 
   add(section, intro, controls, cards.root, pagination.root);
-  add(main, section, details.root);
   void loadCategories();
-  return main;
+  return [section];
 }

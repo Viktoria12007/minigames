@@ -2,6 +2,12 @@
 
 type AuthMode = 'login' | 'register';
 
+type AuthOptions = {
+  onOpen?: (mode: AuthMode) => void;
+  onClose?: () => void;
+  onModeChange?: (mode: AuthMode) => void;
+};
+
 function field(
   labelText: string,
   type: string,
@@ -43,9 +49,17 @@ export function createAuthModal(): HTMLDivElement {
   return root;
 }
 
-export function initializeAuthModal(modal: HTMLDivElement): void {
+export function initializeAuthModal(
+  modal: HTMLDivElement,
+  options: AuthOptions = {},
+): {
+  open: (mode: AuthMode) => void;
+  close: () => void;
+  isOpenFor: (mode: AuthMode) => boolean;
+} {
   const authContent = modal.querySelector<HTMLDivElement>('.auth__content');
   const tabButtons = modal.querySelectorAll<HTMLButtonElement>('[data-tab]');
+  let currentMode: AuthMode | null = null;
 
   function setAuthMode(mode: AuthMode): void {
     if (!authContent) return;
@@ -124,35 +138,47 @@ export function initializeAuthModal(modal: HTMLDivElement): void {
       item.classList.toggle('is-active', item.dataset.tab === mode);
     }
 
-    switchButton.addEventListener('click', () => setAuthMode(isLoginMode ? 'register' : 'login'));
+    switchButton.addEventListener('click', () => {
+      const nextMode = isLoginMode ? 'register' : 'login';
+      options.onModeChange?.(nextMode);
+      setAuthMode(nextMode);
+    });
     form.addEventListener('submit', (event) => event.preventDefault());
   }
 
   function openModal(mode: AuthMode): void {
     setAuthMode(mode);
+    currentMode = mode;
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('no-scroll');
   }
 
   function closeModal(): void {
+    const wasOpen = modal.classList.contains('is-open');
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
+    currentMode = null;
+    if (wasOpen) options.onClose?.();
   }
 
   const dataAuthButtons = document.querySelectorAll<HTMLButtonElement>('[data-auth]');
 
   for (const item of dataAuthButtons) {
-    item.addEventListener('click', () =>
-      openModal(item.dataset.auth === 'register' ? 'register' : 'login'),
-    );
+    item.addEventListener('click', () => {
+      const mode = item.dataset.auth === 'register' ? 'register' : 'login';
+      options.onOpen?.(mode);
+      openModal(mode);
+    });
   }
 
   for (const item of tabButtons) {
-    item.addEventListener('click', () =>
-      setAuthMode(item.dataset.tab === 'register' ? 'register' : 'login'),
-    );
+    item.addEventListener('click', () => {
+      const mode = item.dataset.tab === 'register' ? 'register' : 'login';
+      options.onModeChange?.(mode);
+      setAuthMode(mode);
+    });
   }
 
   const dataCloseModals = modal.querySelectorAll<HTMLElement>('[data-close-modal]');
@@ -162,8 +188,12 @@ export function initializeAuthModal(modal: HTMLDivElement): void {
   }
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && modal.isConnected && modal.classList.contains('is-open'))
       closeModal();
-    }
   });
+  return {
+    open: openModal,
+    close: closeModal,
+    isOpenFor: (mode) => modal.classList.contains('is-open') && currentMode === mode,
+  };
 }

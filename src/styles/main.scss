@@ -13,6 +13,7 @@
 @use '../components/details-dialog/detailsDialog';
 @use '../components/pagination/pagination';
 @use '../components/snackbar/snackbar';
+@use 'not-found';
 
 * {
   box-sizing: border-box;
