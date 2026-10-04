@@ -14,10 +14,10 @@ if (!app) throw new Error('Application root is missing');
 
 const appElement = app;
 
-function navigate(update: RouteUpdate, shouldReplace = false): void {
+function navigate(update: RouteUpdate): void {
   const url = routeUrl(update);
   if (`${import.meta.env.BASE_URL}${location.pathname}${location.search}` !== url) {
-    history[shouldReplace ? 'replaceState' : 'pushState']({}, '', url);
+    history.pushState({}, '', url);
   }
   renderPage();
 }
@@ -30,7 +30,7 @@ function renderPage(): void {
       navigate({ game, auth: undefined });
     },
     onClose() {
-      navigate({ game: undefined }, true);
+      navigate({ game: undefined });
     },
   });
   const main =
@@ -55,10 +55,10 @@ function renderPage(): void {
       navigate({ auth: mode, game: undefined });
     },
     onClose() {
-      navigate({ auth: undefined }, true);
+      navigate({ auth: undefined });
     },
     onModeChange(mode) {
-      navigate({ auth: mode }, true);
+      navigate({ auth: mode });
     },
   });
   if (route.auth) auth.open(route.auth);
