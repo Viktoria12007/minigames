@@ -163,6 +163,7 @@ export function initializeAuthModal(
   for (const item of dataAuthButtons) {
     item.addEventListener('click', () => {
       const mode = item.dataset.auth === 'register' ? 'register' : 'login';
+      console.log(options);
       options.onOpen?.(mode);
       openModal(mode);
     });

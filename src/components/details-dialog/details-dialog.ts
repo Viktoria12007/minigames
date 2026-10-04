@@ -136,6 +136,7 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}):
   root: HTMLElement;
   open: (game: Game) => void;
   openBySlug: (slug: string) => void;
+  close: () => void;
 } {
   const root = element('div', 'game-dialog');
   const panel = element('div', 'game-dialog__panel');
@@ -317,5 +318,6 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}):
       close.focus();
       void load({ slug } as Game, ++requestId);
     },
+      close: hide,
   };
 }
