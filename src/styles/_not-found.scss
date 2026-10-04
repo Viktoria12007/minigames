@@ -1,0 +1,24 @@
+@use 'variables' as *;
+
+.not-found {
+  display: grid;
+  min-height: 55vh;
+  place-content: center;
+  justify-items: center;
+  gap: $size-2;
+  padding: $size-5 $size-3;
+  text-align: center;
+
+  &__title {
+    color: $on-primary;
+    font-size: $display-medium;
+  }
+
+  &__text {
+    color: $on-bg;
+  }
+
+  &__button {
+    margin-top: $size-2;
+  }
+}

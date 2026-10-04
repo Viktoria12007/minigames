@@ -49,7 +49,10 @@
     padding: $btn-small;
   }
   &__chip:hover,
-  .library-controls__chip.is-active {
+  &__chip:active {
+    background: $surface;
+  }
+  &__chip.is-active {
     background: $primary;
   }
   &__sort {
@@ -150,7 +153,6 @@
   .library-controls {
     &__chips {
       gap: $size-1;
-      //margin-right: -8px;
     }
     &__chip {
       font-size: $label-medium;

@@ -1,17 +1,49 @@
-﻿import leaders from '../../data/leaderboard.json';
-import { add, element } from '../../shared/dom';
+import { showSnackbar } from '../snackbar/snackbar';
+import { getApi } from '../../shared/api';
+import { add, button, element } from '../../shared/dom';
 
-export function createLeaderboard(): HTMLElement {
-  const columns = ['Rank', 'Player', 'Games', 'Total', 'Streak', 'Favorite Game'];
-  const section = element('section', 'leaderboard container');
-  const title = element('h2', 'title');
-  section.setAttribute('aria-labelledby', 'leaderboard-title');
-  title.id = 'leaderboard-title';
+type Leader = {
+  rank: number;
+  playerName: string;
+  gamesPlayed: number;
+  totalScore: number;
+  streakDays: number;
+  favoriteGameName: string;
+};
+
+const columns = ['Rank', 'Player', 'Games', 'Total', 'Streak', 'Favorite Game'];
+
+function createState(kind: 'loading' | 'empty' | 'error', retry?: () => void): HTMLElement {
+  const state = element('div', `leaderboard__state leaderboard__state_${kind}`);
+  if (kind === 'loading') {
+    state.setAttribute('role', 'status');
+    state.setAttribute('aria-label', 'Loading top players');
+    for (let index = 0; index < 5; index += 1)
+      state.append(element('div', 'leaderboard__skeleton'));
+    return state;
+  }
+
+  state.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+  const title = kind === 'empty' ? 'No top players yet' : 'Could not load top players';
+  const text =
+    kind === 'empty'
+      ? 'Player scores will appear here soon.'
+      : 'Please check your connection and try again.';
   add(
-    title,
-    document.createTextNode('Top Players '),
-    element('span', 'leaderboard__title_hide', 'This Week'),
+    state,
+    element('p', 'leaderboard__state-title', title),
+    element('p', 'leaderboard__state-text', text),
   );
+  if (retry) {
+    const retryButton = button('Try again', 'leaderboard__retry');
+    retryButton.type = 'button';
+    retryButton.addEventListener('click', retry);
+    state.append(retryButton);
+  }
+  return state;
+}
+
+function createTable(leaders: Leader[]): HTMLElement {
   const table = element('table', 'leaderboard__table');
   const thead = element('thead', 'leaderboard__thead');
   const headRow = element('tr');
@@ -35,19 +67,17 @@ export function createLeaderboard(): HTMLElement {
     headRow.append(cell);
   }
   thead.append(headRow);
+
   const body = element('tbody', 'leaderboard__tbody');
-  for (const [index, leader] of leaders.data.entries()) {
-    const tr = element('tr');
+  for (const [index, leader] of leaders.entries()) {
+    const row = element('tr');
     const player = element('td');
-    const avatar = element(
-      'div',
-      `leaderboard__avatar leaderboard__avatar_${index + 1}`,
-      leader.playerName.match(/[A-Z]/g)?.slice(0, 2).join(''),
-    );
-    const favorite = element('td', 'wide');
+    const initials =
+      leader.playerName.match(/[A-Z]/g)?.slice(0, 2).join('') ?? leader.playerName.slice(0, 2);
+    const avatar = element('div', `leaderboard__avatar leaderboard__avatar_${index + 1}`, initials);
+    const score = element('td');
+    const streak = element('td');
     add(player, avatar, document.createTextNode(leader.playerName));
-    favorite.append(element('div', 'leaderboard__favorite-game', leader.favoriteGameName));
-    const score = element('td', '', '');
     add(
       score,
       element(
@@ -57,32 +87,57 @@ export function createLeaderboard(): HTMLElement {
       ),
       element('span', 'leaderboard__score_mobile', `${(leader.totalScore / 1000).toFixed(1)}K`),
     );
-    const streak = element('td', '', '');
     add(
       streak,
       element(
         'span',
         'leaderboard__streak_desktop',
-        `🔥 ${leader.streakDays} ${leader.streakDays > 1 ? 'days' : 'day'}`,
+        `🔥 ${leader.streakDays} ${leader.streakDays === 1 ? 'day' : 'days'}`,
       ),
       element('span', 'leaderboard__streak_mobile', `🔥 ${leader.streakDays}d`),
     );
-    const row = [
+    const cells = [
       element('td', '', `# ${leader.rank}`),
       player,
       element('td', '', `${leader.gamesPlayed}`),
       score,
       streak,
-      favorite,
+      element('td', 'wide'),
     ];
-    for (const cell of row) {
-      tr.append(cell);
-      body.append(tr);
-    }
+    cells[5].append(element('div', 'leaderboard__favorite-game', leader.favoriteGameName));
+    row.append(...cells);
+    body.append(row);
   }
   table.append(thead, body);
   const wrap = element('div', 'leaderboard__table-wrap');
   wrap.append(table);
-  add(section, title, wrap);
+  return wrap;
+}
+
+export function createLeaderboard(): HTMLElement {
+  const section = element('section', 'leaderboard container');
+  const title = element('h2', 'title');
+  const content = element('div', 'leaderboard__content');
+  section.setAttribute('aria-labelledby', 'leaderboard-title');
+  title.id = 'leaderboard-title';
+  add(
+    title,
+    document.createTextNode('Top Players '),
+    element('span', 'leaderboard__title_hide', 'This Week'),
+  );
+
+  const load = async () => {
+    content.replaceChildren(createState('loading'));
+    try {
+      const { data: leaders } = await getApi<Leader[]>('/leaderboard');
+      content.replaceChildren(leaders.length === 0 ? createState('empty') : createTable(leaders));
+    } catch {
+      content.replaceChildren(createState('error', () => void load()));
+      showSnackbar('Top players could not be loaded. Please try again.', 'error');
+    }
+  };
+
+  add(section, title, content);
+  void load();
   return section;
 }

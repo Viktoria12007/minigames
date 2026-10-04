@@ -20,27 +20,74 @@ export function createFooter(): HTMLElement {
     [
       'Explore',
       [
-        ['Home', '#home', location.hash === '#home' ? 'is-active' : ''],
-        ['Library', '#library', location.hash === '#library' ? 'is-active' : ''],
-        ['Categories', '#categories', location.hash === '#categories' ? 'is-active' : ''],
-        ['Tournaments', '#tournaments', location.hash === '#tournaments' ? 'is-active' : ''],
+        [
+          'Home',
+          `${import.meta.env.BASE_URL}`,
+          location.pathname === `${import.meta.env.BASE_URL}` ||
+          location.pathname === `${import.meta.env.BASE_URL}home`
+            ? 'is-active'
+            : '',
+        ],
+        [
+          'Library',
+          `${import.meta.env.BASE_URL}library`,
+          location.pathname === `${import.meta.env.BASE_URL}library` ? 'is-active' : '',
+        ],
+        [
+          'Categories',
+          `${import.meta.env.BASE_URL}categories`,
+          location.pathname === `${import.meta.env.BASE_URL}categories` ? 'is-active' : '',
+        ],
+        [
+          'Tournaments',
+          `${import.meta.env.BASE_URL}tournaments`,
+          location.pathname === `${import.meta.env.BASE_URL}tournaments` ? 'is-active' : '',
+        ],
       ],
     ],
     [
       'Company',
       [
-        ['About Us', '#about', location.hash === '#about' ? 'is-active' : ''],
-        ['Contact', '#contact', location.hash === '#contact' ? 'is-active' : ''],
-        ['Privacy Policy', '#privacy', location.hash === '#privacy' ? 'is-active' : ''],
-        ['Terms of Service', '#terms', location.hash === '#terms' ? 'is-active' : ''],
+        [
+          'About Us',
+          `${import.meta.env.BASE_URL}about`,
+          location.pathname === `${import.meta.env.BASE_URL}about` ? 'is-active' : '',
+        ],
+        [
+          'Contact',
+          `${import.meta.env.BASE_URL}contact`,
+          location.pathname === `${import.meta.env.BASE_URL}contact` ? 'is-active' : '',
+        ],
+        [
+          'Privacy Policy',
+          `${import.meta.env.BASE_URL}privacy`,
+          location.pathname === `${import.meta.env.BASE_URL}privacy` ? 'is-active' : '',
+        ],
+        [
+          'Terms of Service',
+          `${import.meta.env.BASE_URL}terms`,
+          location.pathname === `${import.meta.env.BASE_URL}terms` ? 'is-active' : '',
+        ],
       ],
     ],
     [
       'Community',
       [
-        ['Share', '#share', location.hash === '#share' ? 'is-active' : ''],
-        ['Chat', '#chat', location.hash === '#chat' ? 'is-active' : ''],
-        ['Feed', '#feed', location.hash === '#feed' ? 'is-active' : ''],
+        [
+          'Share',
+          `${import.meta.env.BASE_URL}share`,
+          location.pathname === `${import.meta.env.BASE_URL}share` ? 'is-active' : '',
+        ],
+        [
+          'Chat',
+          `${import.meta.env.BASE_URL}chat`,
+          location.pathname === `${import.meta.env.BASE_URL}chat` ? 'is-active' : '',
+        ],
+        [
+          'Feed',
+          `${import.meta.env.BASE_URL}feed`,
+          location.pathname === `${import.meta.env.BASE_URL}feed` ? 'is-active' : '',
+        ],
       ],
     ],
   ];
