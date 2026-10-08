@@ -1,4 +1,5 @@
 ﻿import { add, button, element, link } from '../../shared/dom';
+import { checkAppSession, clearAppSession } from '../../shared/session';
 
 export function createLogo(): HTMLAnchorElement {
   const node = link('', `${import.meta.env.BASE_URL}`, 'logo');
@@ -9,30 +10,28 @@ export function createLogo(): HTMLAnchorElement {
 
 function getLinks() {
   return [
-    [
-      'Home',
-      `${import.meta.env.BASE_URL}`,
-      location.pathname === `${import.meta.env.BASE_URL}` ||
-      location.pathname === `${import.meta.env.BASE_URL}home`
-        ? 'is-active'
-        : '',
-    ],
-    [
-      'Library',
-      `${import.meta.env.BASE_URL}library`,
-      location.pathname === `${import.meta.env.BASE_URL}library` ? 'is-active' : '',
-    ],
-    [
-      'Tournaments',
-      `${import.meta.env.BASE_URL}tournaments`,
-      location.pathname === `${import.meta.env.BASE_URL}tournaments` ? 'is-active' : '',
-    ],
-    [
-      'Community',
-      `${import.meta.env.BASE_URL}community`,
-      location.pathname === `${import.meta.env.BASE_URL}community` ? 'is-active' : '',
-    ],
-  ];
+    ['Home', `${import.meta.env.BASE_URL}`],
+    ['Library', `${import.meta.env.BASE_URL}library`],
+    ['Tournaments', `${import.meta.env.BASE_URL}tournaments`],
+    ['Community', `${import.meta.env.BASE_URL}community`],
+  ].map(([text, href]) => [text, href, location.pathname === href ? 'is-active' : ''] as const);
+}
+
+function populateAuthActions(actions: HTMLElement, buttonClass: string, profileClass: string): void {
+  const session = checkAppSession().session;
+  if (!session) {
+    const login = button('Log In', `${buttonClass} button button_ghost`);
+    const register = button('Sign Up', `${buttonClass} button`);
+    login.dataset.auth = 'login';
+    register.dataset.auth = 'register';
+    actions.replaceChildren(login, register);
+    return;
+  }
+  const profile = element('span', profileClass, session.displayName);
+  const logout = button('Log Out', `${buttonClass} button button_ghost`);
+  logout.type = 'button';
+  logout.addEventListener('click', clearAppSession);
+  actions.replaceChildren(profile, logout);
 }
 
 export function createHeader(): HTMLElement {
@@ -44,18 +43,15 @@ export function createHeader(): HTMLElement {
   for (const [text, href, className] of getLinks()) {
     const li = element('li', 'header__item');
     add(li, link(text, href, `header__link ${className}`));
-    add(list, li);
+    list.append(li);
   }
-  add(nav, list);
-  const login = button('Log In', 'header__button button button_ghost');
-  const register = button('Sign Up', 'header__button button');
-  login.dataset.auth = 'login';
-  register.dataset.auth = 'register';
-  add(actions, login, register);
+  nav.append(list);
+  const renderActions = () => populateAuthActions(actions, 'header__button', 'header__profile');
+  renderActions();
+  addEventListener('minigames:sessionchange', renderActions);
   const burger = button('', 'burger');
   burger.setAttribute('aria-label', 'Open menu');
   burger.setAttribute('aria-expanded', 'false');
-  burger.setAttribute('aria-expanded', 'true');
   burger.addEventListener('click', (event) => {
     const item = event.currentTarget as HTMLButtonElement;
     item.classList.toggle('is-open');
@@ -73,9 +69,7 @@ export function createBurgerMenu(): HTMLElement {
   const close = button('', 'close-burger');
   close.setAttribute('aria-label', 'Close menu');
   add(close, element('span'));
-  close.addEventListener('click', () => {
-    document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open');
-  });
+  close.addEventListener('click', () => document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open'));
   add(headerBurger, createLogo(), close);
   const nav = element('nav', 'burger-menu__navigation');
   const list = element('ul', 'burger-menu__list');
@@ -84,20 +78,13 @@ export function createBurgerMenu(): HTMLElement {
   for (const [text, href, className] of getLinks()) {
     const li = element('li', 'burger-menu__item');
     add(li, link(text, href, `burger-menu__link ${className}`));
-    add(list, li);
+    list.append(li);
   }
-  add(nav, list);
-  const login = button('Log In', 'burger-menu__button button button_ghost-white');
-  const register = button('Sign Up', 'burger-menu__button button');
-  login.dataset.auth = 'login';
-  register.dataset.auth = 'register';
-  login.addEventListener('click', () => {
-    document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open');
-  });
-  register.addEventListener('click', () => {
-    document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open');
-  });
-  add(actions, login, register);
+  nav.append(list);
+  const renderActions = () => populateAuthActions(actions, 'burger-menu__button', 'burger-menu__profile');
+  renderActions();
+  addEventListener('minigames:sessionchange', renderActions);
+  actions.addEventListener('click', () => document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open'));
   add(root, headerBurger, nav, actions);
   return root;
 }
