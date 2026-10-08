@@ -1,6 +1,10 @@
-﻿import { add, button, element, link } from '../../shared/dom';
+import { add, button, element, link } from '../../shared/dom';
+import { registerWithEmail, signInWithEmail, signInWithGoogle } from '../../shared/firebase';
+import { createAppSession } from '../../shared/session';
+import { showSnackbar } from '../snackbar/snackbar';
+import { validateAuthFields, type AuthFields, type AuthMode } from './validation';
 
-type AuthMode = 'login' | 'register';
+export type { AuthMode } from './validation';
 
 type AuthOptions = {
   onOpen?: (mode: AuthMode) => void;
@@ -14,7 +18,7 @@ function field(
   name: string,
   placeholder: string,
   autocomplete: string,
-): HTMLLabelElement {
+) {
   const label = element('label', 'auth__label', labelText);
   const input = element('input', 'auth__input');
   input.type = type;
@@ -22,11 +26,17 @@ function field(
   input.setAttribute('autocomplete', autocomplete);
   input.placeholder = placeholder;
   input.required = true;
-  if (type === 'password') {
-    input.minLength = 8;
-  }
-  label.append(input);
+  if (type === 'password') input.minLength = 6;
+  const error = element('span', 'auth__error');
+  error.dataset.errorFor = name;
+  error.setAttribute('aria-live', 'polite');
+  label.append(input, error);
   return label;
+}
+
+function getInput(form: HTMLFormElement, name: string): string {
+  const control = form.elements.namedItem(name);
+  return control instanceof HTMLInputElement ? control.value : '';
 }
 
 export function createAuthModal(): HTMLDivElement {
@@ -39,39 +49,55 @@ export function createAuthModal(): HTMLDivElement {
   dialog.setAttribute('role', 'dialog');
   dialog.setAttribute('aria-modal', 'true');
   dialog.setAttribute('aria-labelledby', 'dialog-title');
+  const close = button('×', 'auth__close');
+  close.type = 'button';
+  close.dataset.closeModal = '';
+  close.setAttribute('aria-label', 'Close authentication dialog');
   const login = button('Login', 'auth__tabs-button is-active');
   const register = button('Register', 'auth__tabs-button');
   login.dataset.tab = 'login';
   register.dataset.tab = 'register';
   add(tabs, login, register);
-  add(dialog, tabs, element('div', 'auth__content'));
+  add(dialog, close, tabs, element('div', 'auth__content'));
   add(root, backdrop, dialog);
   return root;
 }
 
-export function initializeAuthModal(
-  modal: HTMLDivElement,
-  options: AuthOptions = {},
-): {
-  open: (mode: AuthMode) => void;
-  close: () => void;
-  isOpenFor: (mode: AuthMode) => boolean;
-} {
+export function initializeAuthModal(modal: HTMLDivElement, options: AuthOptions = {}) {
   const authContent = modal.querySelector<HTMLDivElement>('.auth__content');
   const tabButtons = modal.querySelectorAll<HTMLButtonElement>('[data-tab]');
   let currentMode: AuthMode | null = null;
+  let isPending = false;
+
+  function setPending(isRequestPending: boolean): void {
+    isPending = isRequestPending;
+    for (const control of modal.querySelectorAll<HTMLInputElement | HTMLButtonElement>(
+      'input, button',
+    )) {
+      control.disabled = isRequestPending;
+    }
+    modal.classList.toggle('is-pending', isRequestPending);
+  }
+
+  function closeModal(): void {
+    if (isPending) return;
+    const wasOpen = modal.classList.contains('is-open');
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+    currentMode = null;
+    if (wasOpen) options.onClose?.();
+  }
 
   function setAuthMode(mode: AuthMode): void {
-    if (!authContent) return;
+    if (!authContent || isPending) return;
     const isLoginMode = mode === 'login';
     const title = element('h2', 'auth__title', isLoginMode ? 'Welcome Back!' : 'Create Account');
-    const form = element('form', 'auth__form');
     title.id = 'dialog-title';
-
+    const form = element('form', 'auth__form');
     if (!isLoginMode) {
-      form.append(field('Username', 'text', 'username', 'e.g. CozyGamer_99', 'username'));
+      form.append(field('Username', 'text', 'username', 'e.g. CozyGamer99', 'username'));
     }
-
     add(
       form,
       field('Email Address', 'email', 'email', 'e.g. alex@minigames.com', 'email'),
@@ -79,11 +105,10 @@ export function initializeAuthModal(
         'Password',
         'password',
         'password',
-        isLoginMode ? '••••••••' : 'Min. 8 characters',
+        isLoginMode ? '••••••••' : 'Min. 6 characters',
         isLoginMode ? 'current-password' : 'new-password',
       ),
     );
-
     if (isLoginMode) {
       form.append(link('Forgot Password?', '#forgot', 'auth__forgot'));
     } else {
@@ -97,21 +122,22 @@ export function initializeAuthModal(
         ),
       );
     }
-
     const submit = button(
       isLoginMode ? 'Login' : 'Create Account',
       'button button--full auth__button',
     );
     submit.type = 'submit';
+    submit.disabled = true;
     form.append(submit);
     const google = button(
       isLoginMode ? 'Continue with Google' : 'Sign up with Google',
       'button auth__button-google',
     );
+    google.type = 'button';
     google.prepend(element('div', 'auth__google-icon'));
     const switchText = element('p', 'auth__switch');
     const switchButton = button(isLoginMode ? 'Register' : 'Login', 'auth__switch-button');
-    switchButton.dataset.switch = '';
+    switchButton.type = 'button';
     add(
       switchText,
       document.createTextNode(
@@ -133,17 +159,88 @@ export function initializeAuthModal(
       google,
       switchText,
     );
-
     for (const item of tabButtons) {
       item.classList.toggle('is-active', item.dataset.tab === mode);
     }
 
+    const inputs = [...form.querySelectorAll<HTMLInputElement>('input')];
+    const errors = [...form.querySelectorAll<HTMLElement>('[data-error-for]')];
+    const values = (): AuthFields => ({
+      email: getInput(form, 'email'),
+      password: getInput(form, 'password'),
+      username: isLoginMode ? undefined : getInput(form, 'username'),
+      confirmPassword: isLoginMode ? undefined : getInput(form, 'confirm-password'),
+    });
+    const renderValidation = (): void => {
+      const validationErrors = validateAuthFields(mode, values());
+      for (const input of inputs) {
+        const error = errors.find((item) => item.dataset.errorFor === input.name);
+        const message = validationErrors[input.name as keyof AuthFields] ?? '';
+        input.setAttribute('aria-invalid', String(Boolean(message)));
+        if (error) {
+          error.textContent = message;
+        }
+      }
+      submit.disabled = Object.keys(validationErrors).length > 0 || isPending;
+    };
+    for (const input of inputs) {
+      input.addEventListener('input', renderValidation);
+      input.addEventListener('change', renderValidation);
+      input.addEventListener('blur', renderValidation);
+    }
     switchButton.addEventListener('click', () => {
       const nextMode = isLoginMode ? 'register' : 'login';
       options.onModeChange?.(nextMode);
       setAuthMode(nextMode);
     });
-    form.addEventListener('submit', (event) => event.preventDefault());
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      renderValidation();
+      if (isPending || submit.disabled) return;
+      setPending(true);
+      try {
+        const formValues = values();
+        const user = isLoginMode
+          ? await signInWithEmail(formValues.email, formValues.password)
+          : await registerWithEmail(
+              formValues.email,
+              formValues.password,
+              formValues.username ?? '',
+            );
+        createAppSession(user);
+        showSnackbar(`Welcome${user.displayName ? `, ${user.displayName}` : ''}!`, 'success');
+        setPending(false);
+        closeModal();
+      } catch (error) {
+        showSnackbar(
+          error instanceof Error ? error.message : 'Authentication failed. Please try again.',
+          'error',
+        );
+      } finally {
+        setPending(false);
+        renderValidation();
+      }
+    });
+    google.addEventListener('click', async () => {
+      if (isPending) return;
+      setPending(true);
+      try {
+        const user = await signInWithGoogle();
+        createAppSession(user);
+        showSnackbar(`Welcome${user.displayName ? `, ${user.displayName}` : ''}!`, 'success');
+        setPending(false);
+        closeModal();
+      } catch (error) {
+        showSnackbar(
+          error instanceof Error ? error.message : 'Google sign-in was not completed.',
+          'error',
+        );
+      } finally {
+        setPending(false);
+        renderValidation();
+      }
+    });
+    renderValidation();
   }
 
   function openModal(mode: AuthMode): void {
@@ -154,25 +251,13 @@ export function initializeAuthModal(
     document.body.classList.add('no-scroll');
   }
 
-  function closeModal(): void {
-    const wasOpen = modal.classList.contains('is-open');
-    modal.classList.remove('is-open');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('no-scroll');
-    currentMode = null;
-    if (wasOpen) options.onClose?.();
-  }
-
-  const dataAuthButtons = document.querySelectorAll<HTMLButtonElement>('[data-auth]');
-
-  for (const item of dataAuthButtons) {
+  for (const item of document.querySelectorAll<HTMLButtonElement>('[data-auth]')) {
     item.addEventListener('click', () => {
       const mode = item.dataset.auth === 'register' ? 'register' : 'login';
       options.onOpen?.(mode);
       openModal(mode);
     });
   }
-
   for (const item of tabButtons) {
     item.addEventListener('click', () => {
       const mode = item.dataset.tab === 'register' ? 'register' : 'login';
@@ -180,13 +265,9 @@ export function initializeAuthModal(
       setAuthMode(mode);
     });
   }
-
-  const dataCloseModals = modal.querySelectorAll<HTMLElement>('[data-close-modal]');
-
-  for (const item of dataCloseModals) {
+  for (const item of modal.querySelectorAll<HTMLElement>('[data-close-modal]')) {
     item.addEventListener('click', closeModal);
   }
-
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && modal.isConnected && modal.classList.contains('is-open'))
       closeModal();
@@ -194,6 +275,6 @@ export function initializeAuthModal(
   return {
     open: openModal,
     close: closeModal,
-    isOpenFor: (mode) => modal.classList.contains('is-open') && currentMode === mode,
+    isOpenFor: (mode: AuthMode) => modal.classList.contains('is-open') && currentMode === mode,
   };
 }

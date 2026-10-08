@@ -8,6 +8,8 @@ import createHomePage from './pages/home';
 import createLibraryPage from './pages/library';
 import createNotFoundPage from './pages/not-found';
 import { element } from './shared/dom';
+import { checkAppSession } from './shared/session';
+import { showSnackbar } from './components/snackbar/snackbar';
 import {
   isAppUrl,
   readRoute,
@@ -43,6 +45,14 @@ const routerState: {
   renderedRoute: RouteState | null;
   isSyncingModals: boolean;
 } = { renderedRoute: null, isSyncingModals: false };
+
+function refreshAppSession(): void {
+  const sessionCheck = checkAppSession();
+  document.documentElement.dataset.authenticated = String(sessionCheck.status === 'active');
+  if (sessionCheck.status === 'expired') {
+    showSnackbar('Your session has expired. You are now browsing as a guest.', 'error');
+  }
+}
 
 function shouldRenderPage(route: RouteState): boolean {
   return !routerState.renderedRoute || routerState.renderedRoute.page !== route.page
@@ -96,12 +106,14 @@ function renderMain(route: RouteState): void {
 }
 
 function syncFromUrl(): void {
+  refreshAppSession();
   const route = readRoute();
   if (shouldRenderPage(route)) renderMain(route);
   syncModals(route);
 }
 
 function navigate(update: RouteUpdate): void {
+  refreshAppSession();
   const url = routeUrl(update);
   if (new URL(url, location.origin).href !== location.href) history.pushState({}, '', url);
   syncFromUrl();
@@ -167,5 +179,11 @@ document.addEventListener('click', (event) => {
 });
 
 addEventListener('popstate', syncFromUrl);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    refreshAppSession();
+  }
+});
+refreshAppSession();
 renderLayout();
 syncFromUrl();
