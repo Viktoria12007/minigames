@@ -17,7 +17,11 @@ function getLinks() {
   ].map(([text, href]) => [text, href, location.pathname === href ? 'is-active' : ''] as const);
 }
 
-function populateAuthActions(actions: HTMLElement, buttonClass: string, profileClass: string): void {
+function populateAuthActions(
+  actions: HTMLElement,
+  buttonClass: string,
+  profileClass: string,
+): void {
   const session = checkAppSession().session;
   if (!session) {
     const login = button('Log In', `${buttonClass} button button_ghost`);
@@ -69,7 +73,9 @@ export function createBurgerMenu(): HTMLElement {
   const close = button('', 'close-burger');
   close.setAttribute('aria-label', 'Close menu');
   add(close, element('span'));
-  close.addEventListener('click', () => document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open'));
+  close.addEventListener('click', () =>
+    document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open'),
+  );
   add(headerBurger, createLogo(), close);
   const nav = element('nav', 'burger-menu__navigation');
   const list = element('ul', 'burger-menu__list');
@@ -81,10 +87,13 @@ export function createBurgerMenu(): HTMLElement {
     list.append(li);
   }
   nav.append(list);
-  const renderActions = () => populateAuthActions(actions, 'burger-menu__button', 'burger-menu__profile');
+  const renderActions = () =>
+    populateAuthActions(actions, 'burger-menu__button', 'burger-menu__profile');
   renderActions();
   addEventListener('minigames:sessionchange', renderActions);
-  actions.addEventListener('click', () => document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open'));
+  actions.addEventListener('click', () =>
+    document.querySelector('.burger-menu_open')?.classList.remove('burger-menu_open'),
+  );
   add(root, headerBurger, nav, actions);
   return root;
 }

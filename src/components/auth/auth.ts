@@ -96,7 +96,7 @@ export function initializeAuthModal(modal: HTMLDivElement, options: AuthOptions 
     title.id = 'dialog-title';
     const form = element('form', 'auth__form');
     if (!isLoginMode) {
-        form.append(field('Username', 'text', 'username', 'e.g. CozyGamer99', 'username'));
+      form.append(field('Username', 'text', 'username', 'e.g. CozyGamer99', 'username'));
     }
     add(
       form,
@@ -110,18 +110,17 @@ export function initializeAuthModal(modal: HTMLDivElement, options: AuthOptions 
       ),
     );
     if (isLoginMode) {
-        form.append(link('Forgot Password?', '#forgot', 'auth__forgot'));
-    }
-    else {
-        form.append(
-            field(
-                'Confirm Password',
-                'password',
-                'confirm-password',
-                'Repeat your password',
-                'new-password',
-            ),
-        );
+      form.append(link('Forgot Password?', '#forgot', 'auth__forgot'));
+    } else {
+      form.append(
+        field(
+          'Confirm Password',
+          'password',
+          'confirm-password',
+          'Repeat your password',
+          'new-password',
+        ),
+      );
     }
     const submit = button(
       isLoginMode ? 'Login' : 'Create Account',
@@ -161,7 +160,7 @@ export function initializeAuthModal(modal: HTMLDivElement, options: AuthOptions 
       switchText,
     );
     for (const item of tabButtons) {
-        item.classList.toggle('is-active', item.dataset.tab === mode);
+      item.classList.toggle('is-active', item.dataset.tab === mode);
     }
 
     const inputs = [...form.querySelectorAll<HTMLInputElement>('input')];
@@ -179,7 +178,7 @@ export function initializeAuthModal(modal: HTMLDivElement, options: AuthOptions 
         const message = validationErrors[input.name as keyof AuthFields] ?? '';
         input.setAttribute('aria-invalid', String(Boolean(message)));
         if (error) {
-            error.textContent = message;
+          error.textContent = message;
         }
       }
       submit.disabled = Object.keys(validationErrors).length > 0 || isPending;
@@ -267,7 +266,7 @@ export function initializeAuthModal(modal: HTMLDivElement, options: AuthOptions 
     });
   }
   for (const item of modal.querySelectorAll<HTMLElement>('[data-close-modal]')) {
-      item.addEventListener('click', closeModal);
+    item.addEventListener('click', closeModal);
   }
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && modal.isConnected && modal.classList.contains('is-open'))

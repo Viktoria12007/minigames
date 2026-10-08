@@ -181,7 +181,7 @@ document.addEventListener('click', (event) => {
 addEventListener('popstate', syncFromUrl);
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') {
-      refreshAppSession();
+    refreshAppSession();
   }
 });
 refreshAppSession();
