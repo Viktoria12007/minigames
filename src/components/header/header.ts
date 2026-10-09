@@ -1,5 +1,6 @@
-﻿import { add, button, element, link } from '../../shared/dom';
+import { add, button, element, link } from '../../shared/dom';
 import { checkAppSession, clearAppSession } from '../../shared/session';
+import { showSnackbar } from '../snackbar/snackbar';
 
 export function createLogo(): HTMLAnchorElement {
   const node = link('', `${import.meta.env.BASE_URL}`, 'logo');
@@ -17,6 +18,58 @@ function getLinks() {
   ].map(([text, href]) => [text, href, location.pathname === href ? 'is-active' : ''] as const);
 }
 
+function profileName(displayName: string, email: string): string {
+  const name = displayName.trim();
+  if (name) {
+      return name;
+  }
+  const localPart = email.split('@', 1)[0]?.trim();
+  return localPart || 'Player';
+}
+
+function initials(name: string): string | null {
+  const words = name.trim().split(/\s+/u).filter(Boolean);
+  const characters = words
+    .slice(0, 2)
+    .map((word) => word.match(/[\p{L}\p{N}]/u)?.[0]?.toLocaleUpperCase())
+    .filter((character): character is string => Boolean(character));
+  return characters.length > 0 ? characters.join('') : null;
+}
+
+function createProfile(
+  displayName: string,
+  email: string,
+  avatarUrl: string | undefined,
+  profileClass: string,
+): HTMLElement {
+  const name = profileName(displayName, email);
+  const profile = element('div', profileClass);
+  const avatar = element('span', `${profileClass}-avatar`);
+  avatar.setAttribute('aria-label', `${name}'s avatar`);
+  const fallback = initials(name);
+  const showFallback = () => {
+    avatar.replaceChildren(
+      fallback
+        ? document.createTextNode(fallback)
+        : element('span', `${profileClass}-avatar-generic`, '•'),
+    );
+    avatar.classList.add('is-fallback');
+  };
+  showFallback();
+  if (avatarUrl) {
+    const image = element('img', `${profileClass}-avatar-image`) as HTMLImageElement;
+    image.src = avatarUrl;
+    image.alt = '';
+    image.addEventListener('load', () => {
+      avatar.replaceChildren(image);
+      avatar.classList.remove('is-fallback');
+    });
+    image.addEventListener('error', showFallback, { once: true });
+  }
+  add(profile, avatar, element('span', `${profileClass}-name`, name));
+  return profile;
+}
+
 function populateAuthActions(
   actions: HTMLElement,
   buttonClass: string,
@@ -31,10 +84,19 @@ function populateAuthActions(
     actions.replaceChildren(login, register);
     return;
   }
-  const profile = element('span', profileClass, session.displayName);
+  const profile = createProfile(
+    session.displayName,
+    session.email,
+    session.avatarUrl,
+    profileClass,
+  );
   const logout = button('Log Out', `${buttonClass} button button_ghost`);
   logout.type = 'button';
-  logout.addEventListener('click', clearAppSession);
+  logout.addEventListener('click', () => {
+    void clearAppSession().catch(() =>
+      showSnackbar('You have been signed out, but Firebase could not confirm it.', 'error'),
+    );
+  });
   actions.replaceChildren(profile, logout);
 }
 
