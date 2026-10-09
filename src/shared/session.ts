@@ -19,7 +19,9 @@ export type SessionCheck = {
 };
 
 function isValidSession(value: unknown, now: number): value is AppSession {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+      return false;
+  }
   const candidate = value as Partial<AppSession>;
   return (
     typeof candidate.displayName === 'string' &&
@@ -46,7 +48,9 @@ function removeSessionAndSignOut(): void {
 
 export function createAppSession(user: User): AppSession {
   const email = user.email;
-  if (!email) throw new Error('The authentication provider did not return an email address.');
+  if (!email) {
+      throw new Error('The authentication provider did not return an email address.');
+  }
   const session: AppSession = {
     displayName: user.displayName ?? '',
     email,
@@ -60,7 +64,9 @@ export function createAppSession(user: User): AppSession {
 
 export function checkAppSession(now = Date.now()): SessionCheck {
   const rawSession = localStorage.getItem(appSessionKey);
-  if (!rawSession) return { status: 'guest' };
+  if (!rawSession) {
+      return { status: 'guest' };
+  }
   let parsed: unknown;
   try {
     parsed = JSON.parse(rawSession);
