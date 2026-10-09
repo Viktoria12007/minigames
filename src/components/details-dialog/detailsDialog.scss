@@ -233,6 +233,12 @@
     &_2 {
       background-color: $avatar-random-1;
     }
+    &_3 {
+      background-color: $avatar-random-4;
+    }
+    &_4 {
+      background-color: $avatar-random-5;
+    }
   }
   &__textarea {
     width: 100%;
@@ -279,6 +285,10 @@
     &:disabled {
       color: $on-bg;
       background-color: $outline-variant;
+    }
+    &[aria-busy='true'] {
+      cursor: progress;
+      opacity: 0.7;
     }
   }
   &__comment-list {
@@ -327,6 +337,10 @@
     }
     &.is-liked {
       color: $like;
+    }
+    &.is-loading {
+      cursor: progress;
+      opacity: 0.7;
     }
   }
   &__state {
