@@ -154,6 +154,7 @@ function renderLayout(): void {
 
   const details = createDetailsDialog({
     onOpen: (game) => navigate({ game, auth: undefined }),
+    onRequireAuth: () => navigate({ auth: 'login' }),
     onClose: () => {
       if (!routerState.isSyncingModals) {
         navigate({ game: undefined });
