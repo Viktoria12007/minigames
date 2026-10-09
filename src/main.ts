@@ -142,7 +142,7 @@ function navigate(update: RouteUpdate): void {
   }
   const url = routeUrl(update);
   if (new URL(url, location.origin).href !== location.href) {
-      history.pushState({}, '', url);
+    history.pushState({}, '', url);
   }
   syncFromUrl();
 }
@@ -156,7 +156,7 @@ function renderLayout(): void {
     onOpen: (game) => navigate({ game, auth: undefined }),
     onClose: () => {
       if (!routerState.isSyncingModals) {
-          navigate({ game: undefined });
+        navigate({ game: undefined });
       }
     },
   });
@@ -165,7 +165,7 @@ function renderLayout(): void {
     onOpen: (mode) => navigate({ auth: mode }),
     onClose: () => {
       if (!routerState.isSyncingModals) {
-          navigate({ auth: undefined });
+        navigate({ auth: undefined });
       }
     },
     onModeChange: (mode) => navigate({ auth: mode }),

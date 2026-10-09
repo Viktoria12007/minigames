@@ -256,7 +256,7 @@ export function initializeAuthModal(modal: HTMLDivElement, options: AuthOptions 
       const mode = item.dataset.auth === 'register' ? 'register' : 'login';
       options.onOpen?.(mode);
       if (!options.onOpen) {
-          openModal(mode);
+        openModal(mode);
       }
     });
   }
