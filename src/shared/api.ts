@@ -9,7 +9,7 @@ export async function getApi<T, M = undefined>(path: string): Promise<ApiRespons
   const response = await fetch(`${API_BASE_URL}${path}`);
 
   if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
+    throw new Error(`Request failed with status ${response.status}`);
   }
 
   const body: unknown = await response.json();
@@ -30,7 +30,7 @@ export async function postApi<T, M = undefined>(
   });
 
   if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
+    throw new Error(`Request failed with status ${response.status}`);
   }
 
   const body: unknown = await response.json();
