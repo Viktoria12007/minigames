@@ -18,17 +18,13 @@ export type SessionCheck = {
   session?: AppSession;
 };
 
-function fallbackDisplayName(email: string): string {
-  const localPart = email.split('@', 1)[0] || 'Player';
-  return localPart.slice(0, 30).padEnd(2, 'x');
-}
-
 function isValidSession(value: unknown, now: number): value is AppSession {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
   const candidate = value as Partial<AppSession>;
   return (
     typeof candidate.displayName === 'string' &&
-    candidate.displayName.length > 0 &&
     typeof candidate.email === 'string' &&
     candidate.email.length > 0 &&
     typeof candidate.authenticatedAt === 'number' &&
@@ -38,29 +34,39 @@ function isValidSession(value: unknown, now: number): value is AppSession {
   );
 }
 
+function notifySessionChange(session?: AppSession): void {
+  dispatchEvent(
+    new CustomEvent<AppSession | undefined>('minigames:sessionchange', { detail: session }),
+  );
+}
+
 function removeSessionAndSignOut(): void {
   localStorage.removeItem(appSessionKey);
-  dispatchEvent(new CustomEvent('minigames:sessionchange'));
-  void signOutFirebase();
+  notifySessionChange();
+  void signOutFirebase().catch(() => null);
 }
 
 export function createAppSession(user: User): AppSession {
   const email = user.email;
-  if (!email) throw new Error('The authentication provider did not return an email address.');
+  if (!email) {
+    throw new Error('The authentication provider did not return an email address.');
+  }
   const session: AppSession = {
-    displayName: user.displayName?.trim() || fallbackDisplayName(email),
+    displayName: user.displayName ?? '',
     email,
     authenticatedAt: Date.now(),
     ...(user.photoURL && { avatarUrl: user.photoURL }),
   };
   localStorage.setItem(appSessionKey, JSON.stringify(session));
-  dispatchEvent(new CustomEvent<AppSession>('minigames:sessionchange', { detail: session }));
+  notifySessionChange(session);
   return session;
 }
 
 export function checkAppSession(now = Date.now()): SessionCheck {
   const rawSession = localStorage.getItem(appSessionKey);
-  if (!rawSession) return { status: 'guest' };
+  if (!rawSession) {
+    return { status: 'guest' };
+  }
   let parsed: unknown;
   try {
     parsed = JSON.parse(rawSession);
@@ -79,6 +85,8 @@ export function checkAppSession(now = Date.now()): SessionCheck {
   return { status: 'active', session: parsed };
 }
 
-export function clearAppSession(): void {
-  removeSessionAndSignOut();
+export async function clearAppSession(): Promise<void> {
+  localStorage.removeItem(appSessionKey);
+  notifySessionChange();
+  await signOutFirebase();
 }

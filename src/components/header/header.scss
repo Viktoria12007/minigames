@@ -26,6 +26,49 @@
   }
 }
 
+.header__profile,
+.burger-menu__profile {
+  display: inline-flex;
+  align-items: center;
+  gap: $size-1;
+  font-weight: $bold;
+}
+
+.header__profile-name,
+.burger-menu__profile-name {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header__profile-avatar,
+.burger-menu__profile-avatar,
+.header__profile-avatar-image,
+.burger-menu__profile-avatar-image {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+}
+
+.header__profile-avatar,
+.burger-menu__profile-avatar {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  background: $primary;
+  color: $on-primary;
+  font-size: $body-small;
+  font-weight: $bold;
+}
+
+.header__profile-avatar-image,
+.burger-menu__profile-avatar-image {
+  display: block;
+  object-fit: cover;
+}
+
 .logo {
   display: inline-flex;
   align-items: center;

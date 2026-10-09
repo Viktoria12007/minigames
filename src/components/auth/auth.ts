@@ -255,7 +255,9 @@ export function initializeAuthModal(modal: HTMLDivElement, options: AuthOptions 
     item.addEventListener('click', () => {
       const mode = item.dataset.auth === 'register' ? 'register' : 'login';
       options.onOpen?.(mode);
-      openModal(mode);
+      if (!options.onOpen) {
+        openModal(mode);
+      }
     });
   }
   for (const item of tabButtons) {

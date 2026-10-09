@@ -60,9 +60,5 @@ export async function signInWithGoogle(): Promise<User> {
 }
 
 export async function signOutFirebase(): Promise<void> {
-  try {
-    await signOut(getAuth(getFirebaseApp()));
-  } catch {
-    // An unconfigured Firebase project must not prevent returning to Guest Mode.
-  }
+  await signOut(getAuth(getFirebaseApp()));
 }
