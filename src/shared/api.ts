@@ -8,7 +8,30 @@ export type ApiResponse<T, M> = {
 export async function getApi<T, M = undefined>(path: string): Promise<ApiResponse<T, M>> {
   const response = await fetch(`${API_BASE_URL}${path}`);
 
-  if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+  if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+  }
+
+  const body: unknown = await response.json();
+  if (typeof body !== 'object' || body === null || !('data' in body)) {
+    throw new Error('The server returned an unexpected response');
+  }
+  return body as ApiResponse<T, M>;
+}
+
+export async function postApi<T, M = undefined>(
+  path: string,
+  payload: Record<string, string>,
+): Promise<ApiResponse<T, M>> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+  }
 
   const body: unknown = await response.json();
   if (typeof body !== 'object' || body === null || !('data' in body)) {
