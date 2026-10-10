@@ -13,6 +13,29 @@ type GamesMeta = {
 };
 
 const pageSize = 6;
+function createCategoriesLoader(): () => Promise<Category[]> {
+  let categories: Category[] | null = null;
+  let request: Promise<Category[]> | null = null;
+
+  return async () => {
+    if (categories) return categories;
+    if (!request) {
+      request = (async () => {
+        try {
+          const response = await getApi<Category[]>('/categories');
+          categories = response.data;
+          return categories;
+        } catch (error) {
+          request = null;
+          throw error;
+        }
+      })();
+    }
+    return request;
+  };
+}
+
+const getCategories = createCategoriesLoader();
 
 type LibraryPageOptions = {
   route: RouteState;
@@ -70,8 +93,7 @@ export default function createLibraryPage({ route, onRouteChange, details }: Lib
   const loadCategories = async () => {
     cards.loading();
     try {
-      const response = await getApi<Category[]>('/categories');
-      setCategories(response.data);
+      setCategories(await getCategories());
       await loadGames();
     } catch {
       cards.error(() => void loadCategories());

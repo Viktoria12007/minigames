@@ -263,6 +263,9 @@
       background-color: $surface-low;
       outline: none;
     }
+    &_wide {
+      grid-column: span 2;
+    }
   }
   &__submit {
     display: grid;
@@ -347,6 +350,7 @@
     display: grid;
     gap: $size-1;
     padding: $size-3;
+    margin-top: $size-3;
     border: 1px solid $outline-variant;
     border-radius: $corner-medium;
     background-color: $white;

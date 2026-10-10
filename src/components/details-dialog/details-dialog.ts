@@ -231,7 +231,7 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}) 
     const commentsSection = element('section', 'game-dialog__comments');
     const commentsTitle = element('h3', 'game-dialog__section-title', 'Comments');
     const commentsContent = element('div', 'game-dialog__comments-content');
-    add(commentsSection, commentsTitle, commentsContent);
+
     commentsContent.append(createState('loading', 'comments'));
     const refreshComments = async () => {
       const session = checkAppSession().session;
@@ -325,11 +325,14 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}) 
       });
       add(form, currentAvatar, textarea, submit);
     } else {
-      const textarea = element('textarea', 'game-dialog__textarea') as HTMLTextAreaElement;
+      const textarea = element(
+        'textarea',
+        'game-dialog__textarea game-dialog__textarea_wide',
+      ) as HTMLTextAreaElement;
       textarea.placeholder = 'Sign in to write a comment';
       textarea.disabled = true;
       textarea.rows = 1;
-      const signIn = button('Sign in', 'game-dialog__submit');
+      const signIn = button('➤', 'game-dialog__submit');
       signIn.type = 'button';
       signIn.setAttribute('aria-label', 'Sign in to comment');
       signIn.addEventListener('click', () => {
@@ -338,7 +341,9 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}) 
       });
       add(form, textarea, signIn);
     }
-    commentsSection.append(form);
+
+    add(commentsSection, commentsTitle, form, commentsContent);
+
     const retry = () => void load(selectedGame, ++requestId);
     const gameRequest = getApi<GameDetails>(
       `/games/${encodeURIComponent(selectedGame.slug)}${currentSession ? `?userEmail=${encodeURIComponent(currentSession.email)}` : ''}`,

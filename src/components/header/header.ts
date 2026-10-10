@@ -66,7 +66,7 @@ function createProfile(
     });
     image.addEventListener('error', showFallback, { once: true });
   }
-  add(profile, avatar, element('span', `${profileClass}-name`, name));
+  add(profile, element('span', `${profileClass}-name`, name), avatar);
   return profile;
 }
 
@@ -76,28 +76,39 @@ function populateAuthActions(
   profileClass: string,
 ): void {
   const session = checkAppSession().session;
+  const isHeader = buttonClass.includes('header');
   if (!session) {
-    const login = button('Log In', `${buttonClass} button button_ghost`);
+    const login = button(
+      'Log In',
+      `${buttonClass} button ${isHeader ? 'button_ghost' : 'button_ghost-white'}`,
+    );
     const register = button('Sign Up', `${buttonClass} button`);
     login.dataset.auth = 'login';
     register.dataset.auth = 'register';
     actions.replaceChildren(login, register);
     return;
   }
-  const profile = createProfile(
-    session.displayName,
-    session.email,
-    session.avatarUrl,
-    profileClass,
+  const logout = button(
+    'Log Out',
+    `${buttonClass} button ${isHeader ? 'button_ghost' : 'button_ghost-white'}`,
   );
-  const logout = button('Log Out', `${buttonClass} button button_ghost`);
-  logout.type = 'button';
+  logout.dataset.logout = 'true';
   logout.addEventListener('click', () => {
     void clearAppSession().catch(() =>
       showSnackbar('You have been signed out, but Firebase could not confirm it.', 'error'),
     );
   });
-  actions.replaceChildren(profile, logout);
+  if (isHeader) {
+    const profile = createProfile(
+      session.displayName,
+      session.email,
+      session.avatarUrl,
+      profileClass,
+    );
+    actions.replaceChildren(profile, logout);
+  } else {
+    actions.replaceChildren(logout);
+  }
 }
 
 export function createHeader(): HTMLElement {

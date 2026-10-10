@@ -40,14 +40,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: $on-primary;
 }
 
 .header__profile-avatar,
 .burger-menu__profile-avatar,
 .header__profile-avatar-image,
 .burger-menu__profile-avatar-image {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
 }
 
@@ -57,8 +58,8 @@
   flex: 0 0 auto;
   place-items: center;
   overflow: hidden;
-  background: $primary;
-  color: $on-primary;
+  background-color: $on-primary;
+  color: $white;
   font-size: $body-small;
   font-weight: $bold;
 }
@@ -262,9 +263,6 @@
     &_open {
       display: flex;
     }
-    &__button {
-      display: none;
-    }
     &__button.button_ghost-white {
       display: block;
     }
@@ -274,7 +272,8 @@
     color: $white;
   }
 
-  .header__actions .header__button.button_ghost,
+  .header__profile,
+  .header__button[data-auth='login'],
   .header__nav {
     display: none;
   }
@@ -306,9 +305,6 @@
     right: 0;
     &__actions {
       margin-top: auto;
-    }
-    &__button {
-      display: block;
     }
   }
 }
