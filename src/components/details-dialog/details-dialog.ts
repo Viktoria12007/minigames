@@ -325,7 +325,10 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}) 
       });
       add(form, currentAvatar, textarea, submit);
     } else {
-      const textarea = element('textarea', 'game-dialog__textarea game-dialog__textarea_wide') as HTMLTextAreaElement;
+      const textarea = element(
+        'textarea',
+        'game-dialog__textarea game-dialog__textarea_wide',
+      ) as HTMLTextAreaElement;
       textarea.placeholder = 'Sign in to write a comment';
       textarea.disabled = true;
       textarea.rows = 1;
@@ -339,7 +342,7 @@ export default function createDetailsDialog(options: DetailsDialogOptions = {}) 
       add(form, textarea, signIn);
     }
 
-      add(commentsSection, commentsTitle, form, commentsContent);
+    add(commentsSection, commentsTitle, form, commentsContent);
 
     const retry = () => void load(selectedGame, ++requestId);
     const gameRequest = getApi<GameDetails>(
