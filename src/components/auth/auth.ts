@@ -251,15 +251,17 @@ export function initializeAuthModal(modal: HTMLDivElement, options: AuthOptions 
     document.body.classList.add('no-scroll');
   }
 
-  for (const item of document.querySelectorAll<HTMLButtonElement>('[data-auth]')) {
-    item.addEventListener('click', () => {
-      const mode = item.dataset.auth === 'register' ? 'register' : 'login';
-      options.onOpen?.(mode);
-      if (!options.onOpen) {
-        openModal(mode);
-      }
-    });
-  }
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const item = target.closest<HTMLButtonElement>('[data-auth]');
+    if (!item) return;
+    const mode = item.dataset.auth === 'register' ? 'register' : 'login';
+    options.onOpen?.(mode);
+    if (!options.onOpen) {
+      openModal(mode);
+    }
+  });
   for (const item of tabButtons) {
     item.addEventListener('click', () => {
       const mode = item.dataset.tab === 'register' ? 'register' : 'login';
