@@ -1,6 +1,8 @@
 ﻿import { add, element, link } from '../../shared/dom';
 import { createLogo } from '../header/header';
 
+const baseUrl = import.meta.env?.BASE_URL ?? '/minigames/';
+
 export function createFooter(): HTMLElement {
   const root = element('footer', 'footer');
   const wrap = element('div', 'footer__wrap container');
@@ -22,72 +24,55 @@ export function createFooter(): HTMLElement {
       [
         [
           'Home',
-          `${import.meta.env.BASE_URL}`,
-          location.pathname === `${import.meta.env.BASE_URL}` ||
-          location.pathname === `${import.meta.env.BASE_URL}home`
+          baseUrl,
+          location.pathname === baseUrl || location.pathname === `${baseUrl}home`
             ? 'is-active'
             : '',
         ],
         [
           'Library',
-          `${import.meta.env.BASE_URL}library`,
-          location.pathname === `${import.meta.env.BASE_URL}library` ? 'is-active' : '',
+          `${baseUrl}library`,
+          location.pathname === `${baseUrl}library` ? 'is-active' : '',
         ],
         [
           'Categories',
-          `${import.meta.env.BASE_URL}categories`,
-          location.pathname === `${import.meta.env.BASE_URL}categories` ? 'is-active' : '',
+          `${baseUrl}categories`,
+          location.pathname === `${baseUrl}categories` ? 'is-active' : '',
         ],
         [
           'Tournaments',
-          `${import.meta.env.BASE_URL}tournaments`,
-          location.pathname === `${import.meta.env.BASE_URL}tournaments` ? 'is-active' : '',
+          `${baseUrl}tournaments`,
+          location.pathname === `${baseUrl}tournaments` ? 'is-active' : '',
         ],
       ],
     ],
     [
       'Company',
       [
-        [
-          'About Us',
-          `${import.meta.env.BASE_URL}about`,
-          location.pathname === `${import.meta.env.BASE_URL}about` ? 'is-active' : '',
-        ],
+        ['About Us', `${baseUrl}about`, location.pathname === `${baseUrl}about` ? 'is-active' : ''],
         [
           'Contact',
-          `${import.meta.env.BASE_URL}contact`,
-          location.pathname === `${import.meta.env.BASE_URL}contact` ? 'is-active' : '',
+          `${baseUrl}contact`,
+          location.pathname === `${baseUrl}contact` ? 'is-active' : '',
         ],
         [
           'Privacy Policy',
-          `${import.meta.env.BASE_URL}privacy`,
-          location.pathname === `${import.meta.env.BASE_URL}privacy` ? 'is-active' : '',
+          `${baseUrl}privacy`,
+          location.pathname === `${baseUrl}privacy` ? 'is-active' : '',
         ],
         [
           'Terms of Service',
-          `${import.meta.env.BASE_URL}terms`,
-          location.pathname === `${import.meta.env.BASE_URL}terms` ? 'is-active' : '',
+          `${baseUrl}terms`,
+          location.pathname === `${baseUrl}terms` ? 'is-active' : '',
         ],
       ],
     ],
     [
       'Community',
       [
-        [
-          'Share',
-          `${import.meta.env.BASE_URL}share`,
-          location.pathname === `${import.meta.env.BASE_URL}share` ? 'is-active' : '',
-        ],
-        [
-          'Chat',
-          `${import.meta.env.BASE_URL}chat`,
-          location.pathname === `${import.meta.env.BASE_URL}chat` ? 'is-active' : '',
-        ],
-        [
-          'Feed',
-          `${import.meta.env.BASE_URL}feed`,
-          location.pathname === `${import.meta.env.BASE_URL}feed` ? 'is-active' : '',
-        ],
+        ['Share', `${baseUrl}share`, location.pathname === `${baseUrl}share` ? 'is-active' : ''],
+        ['Chat', `${baseUrl}chat`, location.pathname === `${baseUrl}chat` ? 'is-active' : ''],
+        ['Feed', `${baseUrl}feed`, location.pathname === `${baseUrl}feed` ? 'is-active' : ''],
       ],
     ],
   ];

@@ -20,15 +20,12 @@ const defaultState = {
   currentPage: 1,
 };
 const validSorts = new Set(['rating-desc', 'rating-asc', 'name-asc', 'name-desc']);
+const baseUrl = import.meta.env?.BASE_URL ?? '/minigames/';
 
 export function readRoute(url = new URL(location.href)): RouteState {
   let page: RoutePage;
-  if (
-    url.pathname === `${import.meta.env.BASE_URL}` ||
-    url.pathname === `${import.meta.env.BASE_URL}home`
-  )
-    page = 'home';
-  else if (url.pathname === `${import.meta.env.BASE_URL}library`) page = 'library';
+  if (url.pathname === baseUrl || url.pathname === `${baseUrl}home`) page = 'home';
+  else if (url.pathname === `${baseUrl}library`) page = 'library';
   else page = 'not-found';
 
   const requestedPage = Number(url.searchParams.get('page'));
@@ -49,9 +46,9 @@ export function routeUrl(update: RouteUpdate, current = readRoute()): string {
   const state = { ...current, ...update };
   const pathname =
     state.page === 'library'
-      ? `${import.meta.env.BASE_URL}library`
+      ? `${baseUrl}library`
       : state.page === 'home'
-        ? `${import.meta.env.BASE_URL}`
+        ? baseUrl
         : location.pathname;
   const parameters = new URLSearchParams();
   if (state.page === 'library') {

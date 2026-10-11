@@ -18,6 +18,9 @@
 }
 
 .auth {
+  .modal.is-pending &__content {
+    pointer-events: none;
+  }
   &__dialog {
     width: min(420px, 100%);
     max-height: calc(100vh - 32px);
@@ -29,6 +32,18 @@
     background-color: $bg;
     box-shadow: $level-3;
     animation: dialog-in 0.3 ease;
+  }
+  &__close {
+    position: absolute;
+    top: $size-2;
+    right: $size-2;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: $on-bg;
+    cursor: pointer;
+    font-size: 28px;
+    line-height: 1;
   }
   &__tabs {
     display: grid;
@@ -74,10 +89,17 @@
     border-radius: $corner-small;
     color: $on-bg;
     font-size: $body-small;
-    margin-bottom: $body-medium;
+    margin-bottom: $size-1;
     &:focus {
       outline: 3px solid #998dff;
     }
+  }
+  &__error {
+    min-height: 1.2em;
+    color: #b42318;
+    font-size: $label-medium;
+    font-weight: $regular;
+    margin-bottom: $body-medium;
   }
   &__forgot {
     display: block;

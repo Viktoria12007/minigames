@@ -8,6 +8,8 @@ import createHomePage from './pages/home';
 import createLibraryPage from './pages/library';
 import createNotFoundPage from './pages/not-found';
 import { element } from './shared/dom';
+import { checkAppSession } from './shared/session';
+import { showSnackbar } from './components/snackbar/snackbar';
 import {
   isAppUrl,
   readRoute,
@@ -44,6 +46,21 @@ const routerState: {
   isSyncingModals: boolean;
 } = { renderedRoute: null, isSyncingModals: false };
 
+function refreshAppSession(): ReturnType<typeof checkAppSession> {
+  const sessionCheck = checkAppSession();
+  document.documentElement.dataset.authenticated = String(sessionCheck.status === 'active');
+  if (sessionCheck.status === 'expired') {
+    showSnackbar('Your session has expired. You are now browsing as a guest.', 'error');
+  }
+  return sessionCheck;
+}
+
+function removeAuthParameterFromCurrentUrl(): void {
+  const url = new URL(location.href);
+  url.searchParams.delete('auth');
+  history.replaceState(history.state, '', `${url.pathname}${url.search}${url.hash}`);
+}
+
 function shouldRenderPage(route: RouteState): boolean {
   return !routerState.renderedRoute || routerState.renderedRoute.page !== route.page
     ? true
@@ -57,18 +74,24 @@ function syncModals(route: RouteState): void {
   if (!modals.details || !modals.auth) return;
   routerState.isSyncingModals = true;
   try {
+    if (route.auth) {
+      modals.details.close();
+      if (!modals.auth.isOpenFor(route.auth)) {
+        modals.auth.open(route.auth);
+      }
+      return;
+    }
+
     if (route.game) {
       modals.auth.close();
-      if (!modals.details.isOpenFor(route.game)) modals.details.openBySlug(route.game);
+      if (!modals.details.isOpenFor(route.game)) {
+        modals.details.openBySlug(route.game);
+      }
       return;
     }
 
     modals.details.close();
-    if (route.auth) {
-      if (!modals.auth.isOpenFor(route.auth)) modals.auth.open(route.auth);
-    } else {
-      modals.auth.close();
-    }
+    modals.auth.close();
   } finally {
     routerState.isSyncingModals = false;
   }
@@ -76,7 +99,9 @@ function syncModals(route: RouteState): void {
 
 function renderMain(route: RouteState): void {
   const main = document.querySelector<HTMLElement>('#main');
-  if (!main || !modals.details) throw new Error('Application layout is missing');
+  if (!main || !modals.details) {
+    throw new Error('Application layout is missing');
+  }
 
   let page: HTMLElement[];
   if (route.page === 'library') {
@@ -96,14 +121,29 @@ function renderMain(route: RouteState): void {
 }
 
 function syncFromUrl(): void {
-  const route = readRoute();
-  if (shouldRenderPage(route)) renderMain(route);
+  const sessionCheck = refreshAppSession();
+  let route = readRoute();
+  if (route.auth && sessionCheck.status === 'active') {
+    removeAuthParameterFromCurrentUrl();
+    route = readRoute();
+    showSnackbar('You are already authenticated.', 'success');
+  }
+  if (shouldRenderPage(route)) {
+    renderMain(route);
+  }
   syncModals(route);
 }
 
 function navigate(update: RouteUpdate): void {
+  const sessionCheck = refreshAppSession();
+  if (update.auth && sessionCheck.status === 'active') {
+    showSnackbar('You are already authenticated.', 'success');
+    return;
+  }
   const url = routeUrl(update);
-  if (new URL(url, location.origin).href !== location.href) history.pushState({}, '', url);
+  if (new URL(url, location.origin).href !== location.href) {
+    history.pushState({}, '', url);
+  }
   syncFromUrl();
 }
 
@@ -114,15 +154,20 @@ function renderLayout(): void {
 
   const details = createDetailsDialog({
     onOpen: (game) => navigate({ game, auth: undefined }),
+    onRequireAuth: () => navigate({ auth: 'login' }),
     onClose: () => {
-      if (!routerState.isSyncingModals) navigate({ game: undefined });
+      if (!routerState.isSyncingModals) {
+        navigate({ game: undefined });
+      }
     },
   });
   const authRoot = createAuthModal();
   const auth = initializeAuthModal(authRoot, {
-    onOpen: (mode) => navigate({ auth: mode, game: undefined }),
+    onOpen: (mode) => navigate({ auth: mode }),
     onClose: () => {
-      if (!routerState.isSyncingModals) navigate({ auth: undefined });
+      if (!routerState.isSyncingModals) {
+        navigate({ auth: undefined });
+      }
     },
     onModeChange: (mode) => navigate({ auth: mode }),
   });
@@ -167,5 +212,11 @@ document.addEventListener('click', (event) => {
 });
 
 addEventListener('popstate', syncFromUrl);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    refreshAppSession();
+  }
+});
+refreshAppSession();
 renderLayout();
 syncFromUrl();

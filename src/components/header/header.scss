@@ -26,6 +26,50 @@
   }
 }
 
+.header__profile,
+.burger-menu__profile {
+  display: inline-flex;
+  align-items: center;
+  gap: $size-1;
+  font-weight: $bold;
+}
+
+.header__profile-name,
+.burger-menu__profile-name {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: $on-primary;
+}
+
+.header__profile-avatar,
+.burger-menu__profile-avatar,
+.header__profile-avatar-image,
+.burger-menu__profile-avatar-image {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.header__profile-avatar,
+.burger-menu__profile-avatar {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  background-color: $on-primary;
+  color: $white;
+  font-size: $body-small;
+  font-weight: $bold;
+}
+
+.header__profile-avatar-image,
+.burger-menu__profile-avatar-image {
+  display: block;
+  object-fit: cover;
+}
+
 .logo {
   display: inline-flex;
   align-items: center;
@@ -219,9 +263,6 @@
     &_open {
       display: flex;
     }
-    &__button {
-      display: none;
-    }
     &__button.button_ghost-white {
       display: block;
     }
@@ -231,7 +272,8 @@
     color: $white;
   }
 
-  .header__actions .header__button.button_ghost,
+  .header__profile,
+  .header__button[data-auth='login'],
   .header__nav {
     display: none;
   }
@@ -263,9 +305,6 @@
     right: 0;
     &__actions {
       margin-top: auto;
-    }
-    &__button {
-      display: block;
     }
   }
 }

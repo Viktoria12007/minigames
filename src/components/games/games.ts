@@ -25,7 +25,7 @@ function formatLikes(likes: number): string {
 function imageSource(path: string): string {
   return /^(?:https?:)?\/\//.test(path)
     ? path
-    : `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
+    : `${import.meta.env?.BASE_URL ?? '/minigames/'}${path.replace(/^\//, '')}`;
 }
 
 function createState(kind: 'loading' | 'empty' | 'error', retry?: () => void): HTMLElement {
