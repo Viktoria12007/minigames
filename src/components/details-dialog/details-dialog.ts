@@ -45,7 +45,7 @@ type LikeResponse = { isLikedByCurrentUser: boolean; likesCount: number };
 function imageSource(path: string): string {
   return /^(?:https?:)?\/\//.test(path)
     ? path
-    : `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
+    : `${import.meta.env?.BASE_URL ?? '/minigames/'}${path.replace(/^\//, '')}`;
 }
 
 function formatLikes(likes: number): string {

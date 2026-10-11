@@ -3,7 +3,7 @@ import { checkAppSession, clearAppSession } from '../../shared/session';
 import { showSnackbar } from '../snackbar/snackbar';
 
 export function createLogo(): HTMLAnchorElement {
-  const node = link('', `${import.meta.env.BASE_URL}`, 'logo');
+  const node = link('', import.meta.env?.BASE_URL ?? '/minigames/', 'logo');
   node.setAttribute('aria-label', 'MiniGames home');
   add(node, element('div', 'logo__icon'), document.createTextNode('MiniGames'));
   return node;
@@ -11,10 +11,10 @@ export function createLogo(): HTMLAnchorElement {
 
 function getLinks() {
   return [
-    ['Home', `${import.meta.env.BASE_URL}`],
-    ['Library', `${import.meta.env.BASE_URL}library`],
-    ['Tournaments', `${import.meta.env.BASE_URL}tournaments`],
-    ['Community', `${import.meta.env.BASE_URL}community`],
+    ['Home', import.meta.env?.BASE_URL ?? '/minigames/'],
+    ['Library', `${import.meta.env?.BASE_URL ?? '/minigames/'}library`],
+    ['Tournaments', `${import.meta.env?.BASE_URL ?? '/minigames/'}tournaments`],
+    ['Community', `${import.meta.env?.BASE_URL ?? '/minigames/'}community`],
   ].map(([text, href]) => [text, href, location.pathname === href ? 'is-active' : ''] as const);
 }
 
